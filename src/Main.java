@@ -44,7 +44,7 @@ public class Main extends Application{
         mainLayout.setLeft(menu);
         mainLayout.setCenter(preview);
 
-        Scene scene = new Scene(mainLayout, INITIAL_WIDTH, INITIAL_HEIGHT, Color.GRAY);
+        Scene scene = new Scene(mainLayout, INITIAL_WIDTH, INITIAL_HEIGHT, Color.GRAY); // Gets stuck in here
         window.setScene(scene);
 
 

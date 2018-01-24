@@ -25,7 +25,7 @@ public class PreviewController {
 
         System.out.println("Start Camera Pressed");
 
-        cap = new VideoCap(new Size(width*0.5, height*0.5));
+        cap = new VideoCap(width);
 
         this.timer = Executors.newSingleThreadScheduledExecutor();
         this.timer.scheduleAtFixedRate(getFrameUpdater(), 0, 33, TimeUnit.MILLISECONDS);
@@ -40,3 +40,4 @@ public class PreviewController {
         };
     }
 }
+
