@@ -2,26 +2,19 @@
  * Created by AaronR on 1/22/18.
  * for Capstone
  */
+
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-
 public class Main extends Application{
 
+
     Stage window;
+    BorderPane mainLayout;
 
-
-    final private int INITIAL_WIDTH = 1100;
-    final private int INITIAL_HEIGHT = 720;
-    final private int MENU_WIDTH = 200;
 
     public static void main(String[] args) {
         launch(args);
@@ -36,21 +29,60 @@ public class Main extends Application{
             onClose();
         });
 
-        MenuPane menu = new MenuPane(MENU_WIDTH);
-        PreviewPane preview = new PreviewPane(INITIAL_WIDTH - MENU_WIDTH,INITIAL_HEIGHT) ;
+        MenuPane menu = new MenuPane(GlobalSettings.MENU_WIDTH);
+        PreviewPane preview = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH, GlobalSettings.INITIAL_HEIGHT) ;
 
 
-        BorderPane mainLayout = new BorderPane();
+        mainLayout = new BorderPane();
         mainLayout.setLeft(menu);
         mainLayout.setCenter(preview);
+        mainLayout.widthProperty().addListener( (obs, oldVal, newVal) -> {
+            System.out.println(newVal);
+            GlobalSettings.PreviewAreaWidth = (double)newVal;
+        });
+        mainLayout.heightProperty().addListener( (obs, oldVal, newVal) -> {
+            System.out.println(newVal);
+            GlobalSettings.PreviewAreaHeight = (double)newVal;
+        });
+        initTopMenu();
 
-        Scene scene = new Scene(mainLayout, INITIAL_WIDTH, INITIAL_HEIGHT, Color.GRAY); // Gets stuck in here
+
+        Scene scene = new Scene(mainLayout, GlobalSettings.INITIAL_WIDTH, GlobalSettings.INITIAL_HEIGHT, Color.GRAY); // Gets stuck in here
+
         window.setScene(scene);
 
-
-
-
         this.window.show();
+
+    }
+
+    private void initTopMenu(){
+
+        // Open menu
+        Menu fileMenu = new Menu("_File");
+        MenuItem openOption = new MenuItem("Open");
+        MenuItem sep = new SeparatorMenuItem();
+        MenuItem exitOption = new MenuItem("Exit");
+        fileMenu.getItems().addAll(openOption, sep, exitOption);
+
+
+        Menu viewMenu = new Menu("_View");
+        MenuItem changeCamera = new MenuItem("Change Camera");
+        MenuItem boxSize = new MenuItem("Change box size");
+        MenuItem hideBox = new MenuItem("Hide Box");
+
+        viewMenu.getItems().addAll(changeCamera, boxSize, hideBox);
+
+
+        // Help Menu
+        Menu helpMenu = new Menu("_Help");
+        MenuItem noHelpForYou = new MenuItem("No Help For You");
+        helpMenu.getItems().addAll(noHelpForYou);
+
+        MenuBar menu= new MenuBar();
+        menu.getMenus().addAll(fileMenu, viewMenu, helpMenu);
+
+        this.mainLayout.setTop(menu);
+
     }
 
     private void onClose(){

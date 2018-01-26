@@ -39,5 +39,11 @@ public class PreviewController {
             this.preview.setImage(image);
         };
     }
+
+    public void updateSelection(double xPercent, double yPercent, double radiusPercent){
+        cap.updateBounds(xPercent, yPercent, radiusPercent);
+    }
+
+
 }
 
