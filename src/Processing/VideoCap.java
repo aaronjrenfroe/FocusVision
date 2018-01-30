@@ -21,6 +21,8 @@ import org.opencv.core.Core;
 
 public class VideoCap {
 
+    private static VideoCap instance;
+
     static{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
@@ -28,13 +30,11 @@ public class VideoCap {
 
     private VideoCapture cap;
     private Mat2Image mat2Img;
-    private double width ;
+    private double width;
     private int[] boxBounds;
     Size nativeSize;
 
-    public VideoCap(double width){
-
-        this.width = width;
+    private VideoCap(){
 
         cap = new VideoCapture();
 
@@ -58,16 +58,22 @@ public class VideoCap {
 
     }
 
+    public static VideoCap getInstance(){
+        if (instance == null){
+            instance = new VideoCap();
+        }
+        return instance;
+    }
 
-
-
-    public BufferedImage getOneFrame() {
+    protected BufferedImage getOneFrame() {
+        BufferedImage nativeImage =  getNativeImage();
+        System.gc();
         cap.read(mat2Img.mat);
         if (mat2Img.mat.empty()){
             System.out.println("Null");
             return null;
         }else{
-            // If we would like to display a lower resolution image
+//            If we would like to display a lower resolution image
 //            Mat mat = new Mat();
 //            double nativeWidth = mat2Img.mat.width();
 //
@@ -80,7 +86,7 @@ public class VideoCap {
         }
     }
 
-    public void getVarianceOfLaplacian(Mat mat){
+    protected void getVarianceOfLaplacian(Mat mat){
 
         if (boxBounds != null) {
             try {
@@ -99,10 +105,12 @@ public class VideoCap {
                 MatOfDouble std = new MatOfDouble();
                 Core.meanStdDev(destination, median, std);
                 // Laplace
-                Metrics.get().setLaplace( Math.pow(std.get(0, 0)[0], 2));
-                // Michaelson Contrast
                 Core.MinMaxLocResult minMax =  Core.minMaxLoc(matGray);
-                Metrics.get().setMichelsonContrast((minMax.maxVal - minMax.minVal) / (minMax.maxVal + minMax.minVal));
+                double focusMetric = Math.pow(std.get(0, 0)[0], 2);
+                double mcontrast = (minMax.maxVal - minMax.minVal) / (minMax.maxVal + minMax.minVal);
+
+                Metrics.get().setMetrics(focusMetric,mcontrast);
+
 
 
             }catch(Exception af){
@@ -113,7 +121,7 @@ public class VideoCap {
     }
 
     //
-    public void updateBounds(double xPercent, double yPercent, double radiusPercent){
+    protected void updateBounds(double xPercent, double yPercent, double radiusPercent){
         boxBounds = new int[3];
         // Radius in pixels: The value passed is a percentage with respect to width
         double radius = nativeSize.width * radiusPercent;
@@ -124,14 +132,24 @@ public class VideoCap {
 
     }
 
-
-
-    public void saveImage(String fileName){
+    public BufferedImage getNativeImage(){
         cap.read(mat2Img.mat);
+        if (mat2Img.mat.empty()){
+            System.out.println("Null");
+            return null;
+        }else {
 
+            return mat2Img.getImage(mat2Img.mat);
+        }
+    }
+
+    /*
+    protected void saveImage(String fileName){
+        cap.read(mat2Img.mat);
         Mat mat = mat2Img.mat;
         Imgcodecs.imwrite(fileName.replace(" ", "_")+".png", mat);
     }
+    */
 }
 
 

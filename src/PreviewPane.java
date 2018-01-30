@@ -58,7 +58,7 @@ public class PreviewPane extends AnchorPane {
 
         square = new Rectangle(GlobalSettings.HALF_SIDE*2, GlobalSettings.HALF_SIDE*2);
         square.setFill(Color.color(0,0,0,0));
-        square.setStroke(Color.BLACK);
+        square.setStroke(Color.RED);
         getChildren().add(square);
         square.setVisible(false);
         square.setMouseTransparent(true);

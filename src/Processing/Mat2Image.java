@@ -35,10 +35,11 @@ public class Mat2Image {
     BufferedImage getImage(Mat mat){
         getSpace(mat);
         mat.get(0, 0, dat);
-        img.getRaster().setDataElements(0, 0,
-                mat.cols(), mat.rows(), dat);
+        img.getRaster().setDataElements(0, 0, mat.cols(), mat.rows(), dat);
         return img;
     }
+
+
 
     static{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);

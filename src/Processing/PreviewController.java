@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import org.opencv.core.Size;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +26,7 @@ public class PreviewController {
 
         System.out.println("Start Camera Pressed");
 
-        cap = new VideoCap(width);
+        cap = VideoCap.getInstance();
 
         this.timer = Executors.newSingleThreadScheduledExecutor();
         this.timer.scheduleAtFixedRate(getFrameUpdater(), 0, 33, TimeUnit.MILLISECONDS);
@@ -36,6 +37,7 @@ public class PreviewController {
         return () -> {
 
             Image image = SwingFXUtils.toFXImage(cap.getOneFrame(), null);
+
             this.preview.setImage(image);
         };
     }
@@ -44,6 +46,9 @@ public class PreviewController {
         cap.updateBounds(xPercent, yPercent, radiusPercent);
     }
 
+    public BufferedImage getNativeImage(){
+        return cap.getNativeImage();
+    }
 
 }
 

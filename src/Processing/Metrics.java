@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
  * for ?
  */
 public class Metrics {
+    private static final int BUFFER_SIZE = 10;
 
     private static Metrics metrics;
 
@@ -18,16 +19,27 @@ public class Metrics {
     private double michelsonContrast = 0.0;
     private double rmsContrast = 0.0;
 
+    private double [] mcontrastBuffer;
+    private double [] focusBuffer;
+
+    private int bufferPosition;
+
+
     private Metrics(){
+
 
         lapProperty = new SimpleStringProperty();
         mcontrastProperty = new SimpleStringProperty();
 
-        lapProperty.set("n/a");
-        mcontrastProperty.set("n/a");
+        lapProperty.set("Focus: n/a");
+        mcontrastProperty.set("Contrast: n/a");
 
         michelsonContrast = 0.0;
         rmsContrast = 0.0;
+
+        focusBuffer = new double[BUFFER_SIZE];
+        mcontrastBuffer = new double[BUFFER_SIZE];
+        bufferPosition = 0;
 
     }
 
@@ -44,20 +56,27 @@ public class Metrics {
     }
 
 
-    public void setLaplace(double laplace) {
+    public void setMetrics(double laplace, double michelsonContrast) {
+        focusBuffer[bufferPosition] = laplace;
+        mcontrastBuffer[bufferPosition] = michelsonContrast;
+        bufferPosition += 1;
+
+        if (bufferPosition == BUFFER_SIZE){
+            bufferPosition = 0;
+        }
+
         Platform.runLater(() -> {
-            lapProperty.set("Focus: " + (int) Math.round(laplace));
+            lapProperty.set("Focus: " + (int) Math.round(getMean(focusBuffer)));
+            mcontrastProperty.set("Contrast: " + ((int)(getMean(mcontrastBuffer) * 1000))/1000.0);
         });
     }
 
-
-    public void setMichelsonContrast(double michelsonContrast) {
-        this.michelsonContrast = michelsonContrast;
-
-        Platform.runLater(() -> {
-            mcontrastProperty.set("Contrast: " + ((int)(michelsonContrast * 1000))/1000.0);
-        });
+    private double getMean(double[] array){
+        double sum = 0.0;
+        for (double d : array) sum += d;
+        return sum/array.length;
     }
+
 
     public SimpleStringProperty getMichelsonContrastProperty() {
         return mcontrastProperty;
