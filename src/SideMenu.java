@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
  * Created by AaronR on 1/22/18.
  * for Hooter Whater
  */
-public class MenuPane extends VBox{
+public class SideMenu extends VBox{
 
     Button newButton;
     Button retakeButton;
@@ -16,7 +16,7 @@ public class MenuPane extends VBox{
     TextField textField;
     TextField textField2;
 
-    public MenuPane(int width) {
+    public SideMenu(int width) {
         super();
         setMaxWidth(width);
         setMinWidth(width);
@@ -34,7 +34,7 @@ public class MenuPane extends VBox{
             retakeButton.setDisable(false);
         });
 
-         retakeButton = new Button();
+        retakeButton = new Button();
         retakeButton.setText("Recapture");
         retakeButton.setMaxWidth(81);
         retakeButton.setMinWidth(81);

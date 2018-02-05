@@ -26,7 +26,7 @@ public class PreviewPane extends AnchorPane {
     BorderPane pane1;
     Rectangle square;
 
-    public PreviewPane(int width , int height) {
+    public PreviewPane(int width) {
         super();
         // Allows clicks to pass through
         this.setPickOnBounds(true);

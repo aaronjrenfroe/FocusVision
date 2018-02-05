@@ -33,18 +33,24 @@ public class VideoCap {
     private double width;
     private int[] boxBounds;
     Size nativeSize;
+    int cameraCount;
+    int currentCamera;
 
     private VideoCap(){
 
         cap = new VideoCapture();
-
-        cap.open(0);
-        if (cap.isOpened()) {
-            System.out.println("Camera Opened");
-        }else{
-            cap.open(0);
-            System.out.println("Might be in use by another program or it hasn't been released yet :(");
+        countCameras();
+        currentCamera = -1;
+        while(!cap.isOpened()){
+            nextCamera();
         }
+
+//        if (cap.isOpened()) {
+//            System.out.println("Camera Opened");
+//        }else{
+//            cap.open(0);
+//            System.out.println("Might be in use by another program or it hasn't been released yet :(");
+//        }
 
 //        cap.set(CV_CAP_PROP_FRAME_WIDTH, 2592);
 //        cap.set(CV_CAP_PROP_FRAME_HEIGHT, 1944);
@@ -56,6 +62,25 @@ public class VideoCap {
         nativeSize = mat2Img.mat.size();
         System.out.println("Size: " +nativeSize);
 
+    }
+
+    public void countCameras(){
+
+        cameraCount = -1;
+        VideoCapture tempCap = new VideoCapture();
+        do {
+            cameraCount++;
+
+            tempCap.open(cameraCount);
+
+        }while (tempCap.isOpened());
+    }
+
+    public void nextCamera(){
+        if(cameraCount > 1 || currentCamera == -1) {
+            currentCamera = ++currentCamera % cameraCount;
+            cap.open(currentCamera);
+        }
     }
 
     public static VideoCap getInstance(){
