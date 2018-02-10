@@ -4,6 +4,7 @@
  */
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -42,12 +43,14 @@ public class AppEntry extends Application{
         Scene scene = new Scene(mainLayout.getLayout(), GlobalSettings.INITIAL_WIDTH, GlobalSettings.INITIAL_HEIGHT, Color.GRAY);
         window.setScene(scene);
         this.window.show();
-
+        
     }
 
 
     private void onClose(){
-
+        System.out.println("Closing Window");
         window.close();
+        Platform.exit();
+        System.exit(0);
     }
 }

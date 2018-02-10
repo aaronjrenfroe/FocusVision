@@ -45,15 +45,6 @@ public class VideoCap {
             nextCamera();
         }
 
-//        if (cap.isOpened()) {
-//            System.out.println("Camera Opened");
-//        }else{
-//            cap.open(0);
-//            System.out.println("Might be in use by another program or it hasn't been released yet :(");
-//        }
-
-//        cap.set(CV_CAP_PROP_FRAME_WIDTH, 2592);
-//        cap.set(CV_CAP_PROP_FRAME_HEIGHT, 1944);
         mat2Img = new Mat2Image();
         cap.read(mat2Img.mat);
         if(mat2Img.mat.empty()){
