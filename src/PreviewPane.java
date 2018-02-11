@@ -1,16 +1,21 @@
 import Processing.Metrics;
+import Processing.VideoCap;
 import com.sun.javafx.binding.StringFormatter;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import Processing.PreviewController;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.awt.image.BufferedImage;
 
 /**
  * Created by AaronR on 1/22/18.
@@ -26,11 +31,25 @@ public class PreviewPane extends AnchorPane {
     BorderPane pane1;
     Rectangle square;
 
+    public PreviewPane(int width, BufferedImage bla) {
+        super();
+        commonInit(width);
+        preview.setImage(SwingFXUtils.toFXImage(bla, null));
+
+
+    }
+
     public PreviewPane(int width) {
         super();
+        commonInit(width);
+        startCameraInit();
+
+    }
+
+    private void commonInit(int width){
+
         // Allows clicks to pass through
         this.setPickOnBounds(true);
-
 
         preview = new ImageView();
         preview.setStyle("-fx-background-color: #336699;");
@@ -78,8 +97,6 @@ public class PreviewPane extends AnchorPane {
 
             requestToMoveBox( e.getX(),  e.getY());
         });
-
-        startCameraInit();
         setLayout();
     }
 
