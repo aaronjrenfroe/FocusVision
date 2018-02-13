@@ -101,26 +101,22 @@ public class PreviewPane extends AnchorPane {
     }
 
     private void setLayout(){
+        
+        VBox vbox = new VBox();
+        vbox.setStyle("-fx-background-color: #FFFFFF;");
+
         Label focus = new Label();
-        System.out.println(Metrics.get().getLaplaceProperty());
-        focus.textProperty().bind(Metrics.get().getLaplaceProperty());
-
-        this.getChildren().add(focus);
-        AnchorPane.setBottomAnchor( focus, 10.0);
-        AnchorPane.setLeftAnchor(focus, 10.0);
-
         Label contrast = new Label();
 
+        focus.textProperty().bind(Metrics.get().getLaplaceProperty());
         contrast.textProperty().bind(Metrics.get().getMichelsonContrastProperty());
 
+        vbox.getChildren().add(focus);
+        vbox.getChildren().add(contrast);
 
-        AnchorPane.setBottomAnchor(contrast, 10.0 + 20);
-        AnchorPane.setLeftAnchor(contrast, 10.0);
-
-        this.getChildren().add(contrast);
+        pane1.setBottom(vbox);
 
     }
-
 
     private void requestToMoveBox(double x, double y){
         System.out.println();
