@@ -49,7 +49,7 @@ public class SideMenuButtons extends VBox {
     private void newWindow()
     {
         TopMenu tm = new TopMenu("VIEWER");
-        PreviewPane pp = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH);
+        PreviewPane pp = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH, VideoCap.getInstance().getNativeImage());
 
         BasicLayout bl = new BasicLayout();
         bl.setPreview(pp);

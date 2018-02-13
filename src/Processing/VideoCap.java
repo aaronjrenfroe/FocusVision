@@ -18,7 +18,6 @@ import java.awt.image.BufferedImage;
 import org.opencv.core.Core;
 
 
-
 public class VideoCap {
 
     private static VideoCap instance;
