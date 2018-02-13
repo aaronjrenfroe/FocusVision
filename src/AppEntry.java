@@ -36,9 +36,12 @@ public class AppEntry extends Application{
 
 
         mainLayout = new BasicLayout();
+
         mainLayout.setSideMenu(menu);
         mainLayout.setPreview(preview);
         mainLayout.setTopMenu(new TopMenu("MAIN"));
+
+
 
         Scene scene = new Scene(mainLayout.getLayout(), GlobalSettings.INITIAL_WIDTH, GlobalSettings.INITIAL_HEIGHT, Color.GRAY);
         window.setScene(scene);
