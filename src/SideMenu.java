@@ -28,7 +28,6 @@ public class SideMenu extends BorderPane {
         setTop(new SideMenuButtons());
 
 
-
         textField = new TextField();
         textField.setMaxWidth(150);
         textField2 = new TextField();
@@ -39,8 +38,6 @@ public class SideMenu extends BorderPane {
         //setAlignment(Pos.BASELINE_CENTER);
 
         SideMenuBottomZoom menuSideZoom = new SideMenuBottomZoom(GlobalSettings.MENU_WIDTH);
-
-
 
         setBottom(menuSideZoom);
 

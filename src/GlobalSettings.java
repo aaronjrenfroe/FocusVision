@@ -43,3 +43,4 @@ public class GlobalSettings {
         this.cameraHeight = cameraHeight;
     }
 }
+

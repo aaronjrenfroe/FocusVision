@@ -1,5 +1,4 @@
-import Processing.Metrics;
-import Processing.VideoCap;
+import Processing.*;
 import com.sun.javafx.binding.StringFormatter;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
@@ -11,9 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import Processing.PreviewController;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import org.opencv.core.Mat;
 
 import java.awt.image.BufferedImage;
 
@@ -25,22 +24,27 @@ public class PreviewPane extends AnchorPane {
 
     // Consists of Image Preview, and BoxDrawing
 
-
     PreviewController  previewController;
     ImageView preview;
     BorderPane pane1;
     Rectangle square;
+    Metrics metrics;
 
-    public PreviewPane(int width, BufferedImage bla) {
+    boolean isLive = false;
+    Mat mat;
+
+    public PreviewPane(int width, Mat bla) {
         super();
         commonInit(width);
-        preview.setImage(SwingFXUtils.toFXImage(bla, null));
-
-
+        this.mat = bla;
+        Mat2Image mat2Img = new Mat2Image();
+        BufferedImage bImage =  mat2Img.getImage(bla);
+        preview.setImage(SwingFXUtils.toFXImage(bImage, null));
     }
 
     public PreviewPane(int width) {
         super();
+        isLive = true;
         commonInit(width);
         startCameraInit();
 
@@ -50,6 +54,8 @@ public class PreviewPane extends AnchorPane {
 
         // Allows clicks to pass through
         this.setPickOnBounds(true);
+
+        metrics = new Metrics();
 
         preview = new ImageView();
         preview.setStyle("-fx-background-color: #336699;");
@@ -82,10 +88,8 @@ public class PreviewPane extends AnchorPane {
         square.setVisible(false);
         square.setMouseTransparent(true);
 
-
         preview.setOnMouseClicked(e -> {
             if(e.getClickCount() == 2){
-                System.out.println("Dumb");
                 square.setVisible(false);
                 e.consume();
             }else {
@@ -93,8 +97,8 @@ public class PreviewPane extends AnchorPane {
             }
 
         });
-        preview.setOnMouseDragged(e -> {
 
+        preview.setOnMouseDragged(e -> {
             requestToMoveBox( e.getX(),  e.getY());
         });
         setLayout();
@@ -108,8 +112,8 @@ public class PreviewPane extends AnchorPane {
         Label focus = new Label();
         Label contrast = new Label();
 
-        focus.textProperty().bind(Metrics.get().getLaplaceProperty());
-        contrast.textProperty().bind(Metrics.get().getMichelsonContrastProperty());
+        focus.textProperty().bind(metrics.getLaplaceProperty());
+        contrast.textProperty().bind(metrics.getMichelsonContrastProperty());
 
         vbox.getChildren().add(focus);
         vbox.getChildren().add(contrast);
@@ -119,7 +123,6 @@ public class PreviewPane extends AnchorPane {
     }
 
     private void requestToMoveBox(double x, double y){
-        System.out.println();
 
         System.out.println("x: " + x + " y: " + y);
 
@@ -136,6 +139,7 @@ public class PreviewPane extends AnchorPane {
 
         updateBox(xPos ,yPos);
         updateVidCapMetricBox(x,y);
+
     }
 
     private void updateBox(double x, double y){
@@ -146,6 +150,7 @@ public class PreviewPane extends AnchorPane {
 
     }
 
+    // Only runs on live previews
     private void startCameraInit(){
         // This is on a delay because on initialization
         // the pane doesn't have a size
@@ -156,7 +161,7 @@ public class PreviewPane extends AnchorPane {
                     public void run() {
 
                         System.out.println( getWidth() +" x "+ getHeight()  );
-                        previewController.startCamera(getWidth(), getHeight(), preview);
+                        previewController.startCamera(getWidth(), getHeight(), preview, metrics);
                     }
                 },
                 1000
@@ -182,6 +187,9 @@ public class PreviewPane extends AnchorPane {
 
         previewController.updateSelection(percentX, percentY, radiusWithRespectToWidth);
 
+        if(!isLive) {
+            MetricsCalculator.getVarianceOfLaplacian(this.mat, percentX,percentY, radiusWithRespectToWidth , metrics);
+        }
     }
 
 }

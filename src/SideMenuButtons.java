@@ -48,23 +48,8 @@ public class SideMenuButtons extends VBox {
 
     private void newWindow()
     {
-        TopMenu tm = new TopMenu("VIEWER");
-        PreviewPane pp = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH, VideoCap.getInstance().getNativeImage());
-
-        BasicLayout bl = new BasicLayout();
-        bl.setPreview(pp);
-        bl.setSideMenu(new SideMenu(GlobalSettings.MENU_WIDTH));
-        bl.setTopMenu(tm);
-
-        Stage newWindow = new Stage();
-
-        newWindow.setTitle("New Window");
-
-        Scene scene = new Scene(bl.getLayout());
-
-        newWindow.setScene(scene);
-        newWindow.show();
-
+       Stage newWindow = WindowFactory.createStaticWindow(VideoCap.getInstance().getOneFrame());
+       newWindow.show();
 
     }
 

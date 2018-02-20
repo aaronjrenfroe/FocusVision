@@ -32,7 +32,7 @@ public class Mat2Image {
         }
     }
 
-    BufferedImage getImage(Mat mat){
+    public BufferedImage getImage(Mat mat){
         getSpace(mat);
         mat.get(0, 0, dat);
         img.getRaster().setDataElements(0, 0, mat.cols(), mat.rows(), dat);
