@@ -23,30 +23,15 @@ public class AppEntry extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        window = primaryStage;
+        this.window = WindowFactory.createLiveWindow(primaryStage);
 
-        window.setTitle("Focus Vision");
         window.setOnCloseRequest(e -> {
             e.consume();
             onClose();
         });
 
-        SideMenu menu = new SideMenu(GlobalSettings.MENU_WIDTH);
-        PreviewPane preview = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH) ;
-
-
-        mainLayout = new BasicLayout();
-
-        mainLayout.setSideMenu(menu);
-        mainLayout.setPreview(preview);
-        mainLayout.setTopMenu(new TopMenu("MAIN"));
-
-
-
-        Scene scene = new Scene(mainLayout.getLayout(), GlobalSettings.INITIAL_WIDTH, GlobalSettings.INITIAL_HEIGHT, Color.GRAY);
-        window.setScene(scene);
         this.window.show();
-        
+
     }
 
 

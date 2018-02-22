@@ -30,7 +30,9 @@ public class VideoCap {
     private VideoCapture cap;
     private Mat2Image mat2Img;
     private double width;
-    private int[] boxBounds;
+
+
+
     Size nativeSize;
     int cameraCount;
     int currentCamera;
@@ -80,7 +82,11 @@ public class VideoCap {
         return instance;
     }
 
-    protected BufferedImage getOneFrame() {
+    public Size getNativeSize() {
+        return nativeSize;
+    }
+
+    public Mat getOneFrame() {
         BufferedImage nativeImage =  getNativeImage();
         System.gc();
         cap.read(mat2Img.mat);
@@ -95,57 +101,12 @@ public class VideoCap {
 //            double heightScale = this.width / nativeWidth;
 //
 //            Imgproc.resize(mat2Img.mat, mat, new Size(width, heightScale * mat2Img.mat.height()));
-            getVarianceOfLaplacian(mat2Img.mat);
 
-            return mat2Img.getImage(mat2Img.mat);
+
+            return mat2Img.mat;
         }
     }
 
-    protected void getVarianceOfLaplacian(Mat mat){
-
-        if (boxBounds != null) {
-            try {
-                int centerX = boxBounds[0];
-                int centerY = boxBounds[1];
-                int radius = boxBounds[2];
-
-                Mat mat2 = mat.submat(centerY - radius, centerY + radius, centerX - radius, centerX + radius);
-
-                Mat destination = new Mat();
-                Mat matGray = new Mat();
-                Imgproc.cvtColor(mat2, matGray, Imgproc.COLOR_BGR2GRAY);
-                //  depth represents the number of colors in the image: RGB so 3
-                Imgproc.Laplacian(mat2, destination, 3); // can also include kernel for Sobal filter https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/laplace_operator/laplace_operator.html
-                MatOfDouble median = new MatOfDouble();
-                MatOfDouble std = new MatOfDouble();
-                Core.meanStdDev(destination, median, std);
-                // Laplace
-                Core.MinMaxLocResult minMax =  Core.minMaxLoc(matGray);
-                double focusMetric = Math.pow(std.get(0, 0)[0], 2);
-                double mcontrast = (minMax.maxVal - minMax.minVal) / (minMax.maxVal + minMax.minVal);
-
-                Metrics.get().setMetrics(focusMetric,mcontrast);
-
-
-
-            }catch(Exception af){
-                System.out.println(af.getLocalizedMessage());
-
-            }
-        }
-    }
-
-    //
-    protected void updateBounds(double xPercent, double yPercent, double radiusPercent){
-        boxBounds = new int[3];
-        // Radius in pixels: The value passed is a percentage with respect to width
-        double radius = nativeSize.width * radiusPercent;
-
-        boxBounds[0] = (int) Math.round(xPercent * nativeSize.width);
-        boxBounds[1] = (int) Math.round(yPercent * nativeSize.height);
-        boxBounds[2] = (int) Math.round(radius);
-
-    }
 
     public BufferedImage getNativeImage(){
         cap.read(mat2Img.mat);

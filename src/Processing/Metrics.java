@@ -11,8 +11,6 @@ import javafx.beans.property.SimpleStringProperty;
 public class Metrics {
     private static final int BUFFER_SIZE = 10;
 
-    private static Metrics metrics;
-
     private SimpleStringProperty lapProperty;
     private SimpleStringProperty mcontrastProperty;
 
@@ -25,7 +23,7 @@ public class Metrics {
     private int bufferPosition;
 
 
-    private Metrics(){
+    public Metrics(){
 
 
         lapProperty = new SimpleStringProperty();
@@ -43,13 +41,6 @@ public class Metrics {
 
     }
 
-
-    public static Metrics get(){
-        if(metrics == null){
-            metrics = new Metrics();
-        }
-        return metrics;
-    }
 
     public SimpleStringProperty getLaplaceProperty() {
         return lapProperty;
