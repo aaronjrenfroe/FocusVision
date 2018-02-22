@@ -13,7 +13,7 @@ public class WindowFactory {
     public static Stage createLiveWindow(Stage window) {
         window.setTitle("Focus Vision");
 
-        SideMenu menu = new SideMenu(GlobalSettings.MENU_WIDTH);
+        SideMenu menu = new SideMenu(GlobalSettings.MENU_WIDTH, true);
         PreviewPane preview = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH) ;
 
 
@@ -38,7 +38,7 @@ public class WindowFactory {
         PreviewPane pp = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH, bla);
 
         bl.setPreview(pp);
-        bl.setSideMenu(new SideMenu(GlobalSettings.MENU_WIDTH));
+        bl.setSideMenu(new SideMenu(GlobalSettings.MENU_WIDTH, false));
         bl.setTopMenu(tm);
 
         Stage newWindow = new Stage();
