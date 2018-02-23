@@ -4,6 +4,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+
 
 /**
  * Created by richa on 2/12/2018.
@@ -11,11 +15,13 @@ import javafx.stage.Stage;
 public class SideMenuButtonsStatic extends VBox {
     Button newButton;
     Button retakeButton;
+    Mat bla;
 
-    public SideMenuButtonsStatic() {
+    public SideMenuButtonsStatic(Mat bla) {
 
+        this.bla = bla;
         newButton = new Button();
-        newButton.setText("Capture");
+        newButton.setText("Save");
         newButton.setMaxWidth(90);
         newButton.setMinWidth(90);
 
@@ -23,7 +29,7 @@ public class SideMenuButtonsStatic extends VBox {
         {
             System.out.println("Button was clicked");
             retakeButton.setDisable(false);
-            newWindow();
+            saveImage("capturedImage");
 
         });
 
@@ -45,10 +51,12 @@ public class SideMenuButtonsStatic extends VBox {
 
     }
 
-    private void newWindow()
+    private void saveImage(String fileName)
     {
-       Stage newWindow = WindowFactory.createStaticWindow(VideoCap.getInstance().getOneFrame());
-       newWindow.show();
+       //save image function
+        String imagePath = System.getProperty("user.home") + "/Desktop";
+
+        Imgcodecs.imwrite(fileName.replace(" ", "_")+".png", bla);
 
     }
 

@@ -38,7 +38,7 @@ public class WindowFactory {
         PreviewPane pp = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH, bla);
 
         bl.setPreview(pp);
-        bl.setSideMenu(new SideMenu(GlobalSettings.MENU_WIDTH, false));
+        bl.setSideMenu(new SideMenu(GlobalSettings.MENU_WIDTH, false, bla));
         bl.setTopMenu(tm);
 
         Stage newWindow = new Stage();

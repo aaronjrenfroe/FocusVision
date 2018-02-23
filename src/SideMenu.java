@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import org.opencv.core.Mat;
 
 /**
  * Created by AaronR on 1/22/18.
@@ -20,9 +21,27 @@ public class SideMenu extends BorderPane {
     TextField textField;
     Label idLable;
     TextField textField2;
+    Mat bla;
+
+    public SideMenu(int width, boolean isLiveWindow, Mat bla) {
+        super();
+
+        this.bla = bla;
+
+        init(width, isLiveWindow);
+
+
+    }
 
     public SideMenu(int width, boolean isLiveWindow) {
         super();
+
+        init(width, isLiveWindow);
+
+
+    }
+
+    void init(int width, boolean isLiveWindow) {
         setMaxWidth(width);
         setMinWidth(width);
 
@@ -34,7 +53,7 @@ public class SideMenu extends BorderPane {
         }
         else
         {
-            setTop(new SideMenuButtonsStatic());
+            setTop(new SideMenuButtonsStatic(bla));
         }
         //setTop(new SideMenuButtons());
 
@@ -56,6 +75,6 @@ public class SideMenu extends BorderPane {
         bottomBox.getChildren().addAll(nameLable, textField, idLable, textField2);
         bottomBox.getChildren().addAll(menuSideZoom); // add last to place on bottom
         setBottom(bottomBox);
-
     }
+
 }

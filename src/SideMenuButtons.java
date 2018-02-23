@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.opencv.core.Mat;
 
 /**
  * Created by richa on 2/12/2018.
@@ -46,10 +47,15 @@ public class SideMenuButtons extends VBox {
 
     }
 
-    private void newWindow()
+    private Mat newWindow()
     {
-       Stage newWindow = WindowFactory.createStaticWindow(VideoCap.getInstance().getOneFrame());
-       newWindow.show();
+        Mat temp;
+        temp = VideoCap.getInstance().getOneFrame();
+        Stage newWindow = WindowFactory.createStaticWindow(temp);
+        newWindow.show();
+
+        return temp;
+
 
     }
 
