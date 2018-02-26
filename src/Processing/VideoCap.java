@@ -103,7 +103,7 @@ public class VideoCap {
 //            Imgproc.resize(mat2Img.mat, mat, new Size(width, heightScale * mat2Img.mat.height()));
 
 
-            return mat2Img.mat;
+            return mat2Img.mat.clone();
         }
     }
 

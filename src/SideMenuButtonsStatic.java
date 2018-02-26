@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 
 /**
@@ -55,8 +56,9 @@ public class SideMenuButtonsStatic extends VBox {
     {
        //save image function
         String imagePath = System.getProperty("user.home") + "/Desktop";
-
+        Imgproc.cvtColor(bla, bla, Imgproc.COLOR_RGB2BGR);
         Imgcodecs.imwrite(fileName.replace(" ", "_")+".png", bla);
+
 
     }
 

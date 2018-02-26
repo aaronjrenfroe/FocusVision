@@ -16,13 +16,11 @@ public class WindowFactory {
         SideMenu menu = new SideMenu(GlobalSettings.MENU_WIDTH, true);
         PreviewPane preview = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH) ;
 
-
         BasicLayout mainLayout = new BasicLayout();
 
         mainLayout.setSideMenu(menu);
         mainLayout.setPreview(preview);
         mainLayout.setTopMenu(new TopMenu("MAIN"));
-
 
         Scene scene = new Scene(mainLayout.getLayout(), GlobalSettings.INITIAL_WIDTH, GlobalSettings.INITIAL_HEIGHT, Color.GRAY);
         window.setScene(scene);
@@ -51,7 +49,6 @@ public class WindowFactory {
         System.out.println("We need to persists new windows for image re-taking");
 
         return newWindow;
-
 
     }
 }
