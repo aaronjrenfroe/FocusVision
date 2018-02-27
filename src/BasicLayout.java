@@ -1,3 +1,4 @@
+import Models.ViewModel;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 public class BasicLayout{
 
     private BorderPane layout;
+    ViewModel viewModel;
 
     public BasicLayout() {
         this.layout = new BorderPane();

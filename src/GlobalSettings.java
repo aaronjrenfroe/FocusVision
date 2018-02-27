@@ -42,5 +42,6 @@ public class GlobalSettings {
     public void setCameraHeight(int cameraHeight) {
         this.cameraHeight = cameraHeight;
     }
+
 }
 
