@@ -29,8 +29,8 @@ public class Metrics {
         lapProperty = new SimpleStringProperty();
         mcontrastProperty = new SimpleStringProperty();
 
-        lapProperty.set("Focus: n/a");
-        mcontrastProperty.set("Contrast: n/a");
+        lapProperty.set("Laplace Variance: n/a");
+        mcontrastProperty.set("Michaelson Contrast: n/a");
 
         michelsonContrast = 0.0;
         rmsContrast = 0.0;
@@ -56,8 +56,8 @@ public class Metrics {
         }
 
         Platform.runLater(() -> {
-            lapProperty.set("Focus: " + (int) Math.round(getMean(focusBuffer)));
-            mcontrastProperty.set("Contrast: " + ((int)(getMean(mcontrastBuffer) * 1000))/1000.0);
+            lapProperty.set("Laplace Variance: " + (int) Math.round(getMean(focusBuffer)));
+            mcontrastProperty.set("Michaelson Contrast: " + ((int)(getMean(mcontrastBuffer) * 1000))/1000.0);
         });
     }
 

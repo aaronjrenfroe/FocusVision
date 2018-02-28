@@ -10,11 +10,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/javalibs/opencv/3.3.0_3/share/OpenCV/java/opencv-330.jar!/" />
+          <root url="jar://$MODULE_DIR$/opencv-330.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/javalibs/opencv/3.3.0_3/share/OpenCV/java/opencv-330.jar!/" />
+          <root url="jar://$MODULE_DIR$/opencv-330.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

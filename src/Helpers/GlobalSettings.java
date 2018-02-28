@@ -9,7 +9,7 @@ public class GlobalSettings {
     public static final int INITIAL_WIDTH = 1100;
     public static final int INITIAL_HEIGHT = 720;
 
-    public static final int MENU_WIDTH = 200;
+    public static final int MENU_WIDTH = 250;
 
     public static double HALF_SIDE = 50;
 

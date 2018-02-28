@@ -2,6 +2,7 @@ package Models;
 import Helpers.GlobalSettings;
 import Helpers.ImageHelper;
 import Helpers.MetricsCalculator;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Bounds;
@@ -191,6 +192,26 @@ public abstract class AbstractViewController implements MatProvider{
         // It is Empty here on purpose.
     }
 
-
+    public void translatePressed(int direction)
+    {
+        switch (direction)
+        {
+            case 1:
+                System.out.println("up");
+                break;
+            case 2:
+                System.out.println("right");
+                break;
+            case 3:
+                System.out.println("down");
+                break;
+            case 4:
+                System.out.println("left");
+                break;
+            default:
+                System.out.println("default");
+                break;
+        }
+    }
 
 }
