@@ -36,9 +36,17 @@ public class AppEntry extends Application{
 
 
     private void onClose(){
-        System.out.println("Closing Window");
+        System.out.println("Terminating FX Application");
         window.close();
+
         Platform.exit();
+
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        System.out.println("Stoping JVM");
         System.exit(0);
     }
 }
