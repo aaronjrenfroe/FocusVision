@@ -1,6 +1,7 @@
 package Views;
 
 import Models.AbstractViewController;
+import Models.StaticViewController;
 import Processing.VideoCap;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -34,12 +35,28 @@ public class TopMenu extends MenuBar {
     }
 
     private void initForViewWindow(){
+        StaticViewController staticController = (StaticViewController) controller;
+
         Menu fileMenu = new Menu("_File");
         MenuItem openOption = new MenuItem("Open");
         MenuItem saveOption = new MenuItem("Save");
         MenuItem sep = new SeparatorMenuItem();
-        MenuItem exitOption = new MenuItem("Exit");
-        fileMenu.getItems().addAll(openOption, saveOption, sep, exitOption);
+
+        saveOption.setOnAction(e -> {
+
+            staticController.saveImagePressed();
+
+        });
+
+        openOption.setOnAction(e -> {
+
+            staticController.openImagePressed();
+
+        });
+
+
+
+        fileMenu.getItems().addAll(openOption, saveOption, sep);
 
         // Help Menu
         Menu helpMenu = new Menu("_Help");
@@ -55,6 +72,13 @@ public class TopMenu extends MenuBar {
     private void initForMainWindow(){
         Menu fileMenu = new Menu("_File");
         MenuItem openOption = new MenuItem("Open");
+
+        openOption.setOnAction(e -> {
+
+            controller.openImagePressed();
+
+        });
+
         MenuItem sep = new SeparatorMenuItem();
         MenuItem exitOption = new MenuItem("Exit");
         fileMenu.getItems().addAll(openOption, sep, exitOption);

@@ -24,7 +24,7 @@ public class WindowFactory {
     public static Stage createLiveWindow(Stage window) {
         window.setTitle("Focus Vision");
 
-        DynamicPreviewController controller = new DynamicPreviewController();
+        DynamicPreviewController controller = new DynamicPreviewController(window);
 
         SideMenu menu = new SideMenu(GlobalSettings.MENU_WIDTH, true, controller);
 
@@ -44,8 +44,11 @@ public class WindowFactory {
     }
 
 
-    public static Stage createStaticWindow(DynamicPreviewController creator) {
-        StaticViewController controller = new StaticViewController(VideoCap.getInstance().getOneFrame());
+    public static Stage createStaticWindow(AbstractViewController creator, Mat mat, String windowTitle) {
+
+        Stage newWindow = new Stage();
+
+        StaticViewController controller = new StaticViewController(mat, newWindow);
         controller.setPatientName(creator.getPatientName());
         controller.setSaveLocation(creator.getSaveLocation());
 
@@ -60,14 +63,17 @@ public class WindowFactory {
         bl.setSideMenu(new SideMenu(GlobalSettings.MENU_WIDTH, false, controller));
         bl.setTopMenu(tm);
 
-        Stage newWindow = new Stage();
 
-        newWindow.setTitle("New Window");
+        newWindow.setTitle("FocusVision | " + windowTitle);
 
         Scene scene = new Scene(bl.getLayout());
 
         newWindow.setScene(scene);
-        System.out.println("We need to persists new windows for image re-taking");
+
+        ViewManager.getManager().addStage(controller);
+        newWindow.setOnCloseRequest(e -> {
+            ViewManager.getManager().removeStage(controller);
+        });
 
         return newWindow;
 

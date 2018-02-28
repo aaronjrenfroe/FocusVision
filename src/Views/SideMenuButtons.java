@@ -42,8 +42,8 @@ public class SideMenuButtons extends VBox {
         retakeButton.setDisable(true);
         retakeButton.setOnAction(e ->
         {
-            System.out.println(retakeButton.getWidth());
-            System.out.println("Retake Image");
+
+            controller.reCaptureImagePressed();
         });
 
         this.getChildren().addAll(newButton, retakeButton);

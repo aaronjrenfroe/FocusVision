@@ -24,22 +24,12 @@ public class DynamicPreviewController extends AbstractViewController {
     private ScheduledExecutorService timer;
     VideoCap cap;
 
-    public DynamicPreviewController() {
-        super("FocusVision");
+    public DynamicPreviewController(Stage stage) {
+        super("FocusVision", stage);
 
         cap = VideoCap.getInstance();
         startCameraInit();
 
-    }
-
-    // capture image
-    public void captureImage(){
-        System.out.println("Should Capture Image and Open New Window");
-    }
-    // recapture Image
-
-    public void reCaptureImage(){
-        System.out.println("Should Replace Image in last Opened Window");
     }
 
     private void startCameraInit(){
@@ -72,20 +62,24 @@ public class DynamicPreviewController extends AbstractViewController {
         };
     }
 
+    // capture image
     public void captureImagePressed(){
         System.out.println("RequestToCaptureImage");
-
-        Stage newWindow = WindowFactory.createStaticWindow(this);
+        Stage newWindow = WindowFactory.createStaticWindow(this, VideoCap.getInstance().getOneFrame(), "Caputre " + (ViewManager.getManager().getTotalViewsCreated()+1));
         newWindow.show();
-
-
 
     }
 
+    // recapture Image
+    public void reCaptureImagePressed(){
+        System.out.println("Should Replace Image in last Opened Window");
+        StaticViewController staticController = ViewManager.getManager().getLast();
+        if(staticController != null){
+            staticController.setMat(VideoCap.getInstance().getOneFrame());
+        }
 
 
-
-
+    }
 
 
 }

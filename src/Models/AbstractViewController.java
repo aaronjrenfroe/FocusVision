@@ -1,10 +1,17 @@
 package Models;
 import Helpers.GlobalSettings;
+import Helpers.ImageHelper;
 import Helpers.MetricsCalculator;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import org.opencv.core.Mat;
+
+import java.io.File;
 
 /**
  * Created by AaronR on 2/25/18.
@@ -19,9 +26,10 @@ public abstract class AbstractViewController implements MatProvider{
     SimpleIntegerProperty boxSize;
     double[] selectionInfo;
     Metrics metrics;
+    Stage stage;
 
-    public AbstractViewController(String windowName) {
-
+    public AbstractViewController(String windowName, Stage stage) {
+        this.stage = stage;
         imageView = new ImageView();
         this.windowName = windowName;
         System.out.println(saveLocation);
@@ -30,7 +38,12 @@ public abstract class AbstractViewController implements MatProvider{
         saveLocation = new SimpleStringProperty();
         boxSize = new SimpleIntegerProperty();
         boxSize.set(50);
-        saveLocation.set(getDefaultSaveLocation() + "/FocusVison/Images");
+        patientName.set("untitled");
+        saveLocation.set(getDefaultSaveLocation() + "/Desktop/FocusVision/Images/");
+        File file = new File(saveLocation.getValue());
+        file.mkdirs();
+
+
 
     }
 
@@ -38,11 +51,29 @@ public abstract class AbstractViewController implements MatProvider{
         return System.getProperty("user.home");
     }
 
-    // change box size
-    // on resize
-    // other menu things
-    // open help
+    // open Image
+    public void openImagePressed(){
 
+        System.out.println("Should present User with UI to select file and open Image");
+        System.out.println("Should Open Image");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(stage);
+        String filePath = file.getName();
+        System.out.println(filePath);
+        String extension = "";
+
+        int i = filePath.lastIndexOf('.');
+        if (i > 0) {
+            extension = filePath.substring(i+1);
+        }
+
+        if (extension.compareTo("png") == 0){
+            Mat mat = ImageHelper.openImage(file);
+           Stage stage = WindowFactory.createStaticWindow(this, mat, file.getAbsolutePath());
+           stage.show();
+        }
+    }
 
     public String getPatientName() {
         return patientName.get();
@@ -86,15 +117,6 @@ public abstract class AbstractViewController implements MatProvider{
         this.imageView = imageView;
     }
 
-    public void updateSelection(double xPercent, double yPercent, double radiusPercent){
-
-        selectionInfo = new double[3];
-        selectionInfo[0] = xPercent;//(int) Math.round(xPercent * nativeSize.width);
-        selectionInfo[1] = yPercent; //(int) Math.round(yPercent * nativeSize.height);
-        selectionInfo[2] = radiusPercent; //(int) Math.round(radius);
-        System.out.println(selectionInfo[0] +" "+selectionInfo[1] + " " + selectionInfo[2]);
-
-    }
 
     public double[] requestToMoveBox(double x, double y){
 
@@ -111,14 +133,13 @@ public abstract class AbstractViewController implements MatProvider{
         double yPos = Math.min(yReq, bounds.getHeight() + bounds.getMinY() - 2* GlobalSettings.HALF_SIDE - 1);
         yPos = Math.max(yPos, bounds.getMinY());
 
-
         updateVidCapMetricBox(x,y);
         double[] xAndYPos = {xPos,yPos};
         return xAndYPos;
 
     }
 
-    private void updateVidCapMetricBox(double centerX, double centerY){
+    protected void updateVidCapMetricBox(double centerX, double centerY){
 
         Bounds localBounds = imageView.boundsInLocalProperty().getValue();
         double radiusWithRespectToWidth = GlobalSettings.HALF_SIDE / localBounds.getWidth();
@@ -135,11 +156,17 @@ public abstract class AbstractViewController implements MatProvider{
 
         System.out.println(percentX + " by " + percentY);
         updateSelection(percentX, percentY, radiusWithRespectToWidth);
+        //MetricsCalculator.getVarianceOfLaplacian(this.mat, percentX,percentY, radiusWithRespectToWidth , metrics);
 
-//        if(!isLive) {
-//            MetricsCalculator.getVarianceOfLaplacian(this.mat, percentX,percentY, radiusWithRespectToWidth , metrics);
-//        }
+    }
 
+    public void updateSelection(double xPercent, double yPercent, double radiusPercent){
+
+        selectionInfo = new double[3];
+        selectionInfo[0] = xPercent;//(int) Math.round(xPercent * nativeSize.width);
+        selectionInfo[1] = yPercent; //(int) Math.round(yPercent * nativeSize.height);
+        selectionInfo[2] = radiusPercent; //(int) Math.round(radius);
+        System.out.println(selectionInfo[0] +" "+selectionInfo[1] + " " + selectionInfo[2]);
 
     }
 
@@ -159,6 +186,10 @@ public abstract class AbstractViewController implements MatProvider{
         System.out.println("Button was clicked -- zooming Out!!");
     }
 
+    protected void notifyBoxMoved(){
+        // this gits called when box gets moved and this method gets implemented in StaticViewController
+        // It is Empty here on purpose.
+    }
 
 
 
