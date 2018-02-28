@@ -3,10 +3,10 @@
  * for Capstone
  */
 
+import Models.WindowFactory;
+import Views.BasicLayout;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class AppEntry extends Application{
