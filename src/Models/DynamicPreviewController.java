@@ -5,14 +5,15 @@ import Processing.Mat2Image;
 import Helpers.MetricsCalculator;
 import Processing.VideoCap;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.opencv.core.Mat;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by AaronR on 2/25/18.
@@ -21,11 +22,16 @@ import java.util.concurrent.TimeUnit;
 
 public class DynamicPreviewController extends AbstractViewController {
 
-    private ScheduledExecutorService timer;
+    private Timer timer;
     VideoCap cap;
+    SimpleBooleanProperty recaptureButtonDisabledProperty;
 
     public DynamicPreviewController(Stage stage) {
         super("FocusVision", stage);
+        ViewManager.getManager().setPrimaryController(this);
+
+        recaptureButtonDisabledProperty = new SimpleBooleanProperty();
+        recaptureButtonDisabledProperty.set(true);
 
         cap = VideoCap.getInstance();
         startCameraInit();
@@ -35,30 +41,33 @@ public class DynamicPreviewController extends AbstractViewController {
     private void startCameraInit(){
         // This is on a delay because on initialization
         // the pane doesn't have a size
-        this.timer = Executors.newSingleThreadScheduledExecutor();
+        this.timer = new Timer();
+
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
-
-                        timer.scheduleAtFixedRate(getFrameUpdater(metrics), 0, 33, TimeUnit.MILLISECONDS);
+                        // times are in milliseconds
+                        timer.scheduleAtFixedRate(getFrameUpdater(metrics),0,33);
                     }
                 },
                 1000
         );
     }
 
-    private Runnable getFrameUpdater(Metrics metrics){
-        Mat2Image mat2Img = new Mat2Image();
 
-        return () -> {
-            //mat2Img.getImage(cap.getOneFrame())
-            Mat mat = cap.getOneFrame();
-            if(selectionInfo != null) {
-                MetricsCalculator.getVarianceOfLaplacian(mat, selectionInfo[0], selectionInfo[1], selectionInfo[2], metrics);
+    private TimerTask getFrameUpdater(Metrics metrics){
+        Mat2Image mat2Img = new Mat2Image();
+        return new TimerTask(){
+            @Override
+            public void run() {
+                Mat mat = cap.getOneFrame();
+                if(selectionInfo != null) {
+                    MetricsCalculator.getVarianceOfLaplacian(mat, selectionInfo[0], selectionInfo[1], selectionInfo[2], metrics);
+                }
+                Image image = SwingFXUtils.toFXImage(mat2Img.getImage(cap.getOneFrame()), null);
+                imageView.setImage(image);
             }
-            Image image = SwingFXUtils.toFXImage(mat2Img.getImage(cap.getOneFrame()), null);
-            this.imageView.setImage(image);
         };
     }
 
@@ -67,6 +76,7 @@ public class DynamicPreviewController extends AbstractViewController {
         System.out.println("RequestToCaptureImage");
         Stage newWindow = WindowFactory.createStaticWindow(this, VideoCap.getInstance().getOneFrame(), "Caputre " + (ViewManager.getManager().getTotalViewsCreated()+1));
         newWindow.show();
+        recaptureButtonDisabledProperty.setValue(false);
 
     }
 
@@ -77,9 +87,25 @@ public class DynamicPreviewController extends AbstractViewController {
         if(staticController != null){
             staticController.setMat(VideoCap.getInstance().getOneFrame());
         }
-
-
     }
 
+    public void changeCameraPressed(){
+        timer.cancel();
+        timer.purge();
+        VideoCap.getInstance().nextCamera();
+        timer = new Timer();
+        timer.scheduleAtFixedRate(getFrameUpdater(metrics), 0, 33);
+    }
 
+    public void recountCameraPressed(){
+        VideoCap.getInstance().countCameras();
+    }
+
+    public void lastCreatedCaptureDeleted(){
+        recaptureButtonDisabledProperty.setValue(true);
+    }
+
+    public SimpleBooleanProperty getRecaptureButtonDisabledProperty() {
+        return recaptureButtonDisabledProperty;
+    }
 }

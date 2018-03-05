@@ -11,12 +11,11 @@ import java.util.ArrayList;
 public class ViewManager {
 
     private static ViewManager manager;
-
     private ArrayList<AbstractViewController> views;
-
     private ViewManager() {
         views = new ArrayList();
     }
+    DynamicPreviewController controller;
 
     int totaleViewCreated = 0;
 
@@ -27,11 +26,12 @@ public class ViewManager {
         return manager;
     }
 
-    public AbstractViewController getPrimaryStage(){
-        if(views.size() == 0){
-            return null;
-        }
-        return views.get(0);
+    public void setPrimaryController(DynamicPreviewController controller){
+        this.controller = controller;
+    }
+
+    public DynamicPreviewController getPrimaryStage(){
+        return controller;
     }
 
     public void addStage(AbstractViewController view){
@@ -40,9 +40,11 @@ public class ViewManager {
     }
 
     public void removeStage(AbstractViewController view){
+        if (view == getLast()){
+            controller.lastCreatedCaptureDeleted();
+        }
         if(views.contains(view)){
             views.remove(view);
-
         }
     }
 
@@ -56,6 +58,5 @@ public class ViewManager {
     public int getTotalViewsCreated(){
         return totaleViewCreated;
     }
-
 
 }

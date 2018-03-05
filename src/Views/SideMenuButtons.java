@@ -1,14 +1,10 @@
 package Views;
 
-import Models.AbstractViewController;
 import Models.DynamicPreviewController;
-import Processing.VideoCap;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import org.opencv.core.Mat;
 
 /**
  * Created by richa on 2/12/2018.
@@ -29,8 +25,6 @@ public class SideMenuButtons extends VBox {
         newButton.setOnAction(e ->
         {
             System.out.println("Button was clicked");
-            retakeButton.setDisable(false);
-
             controller.captureImagePressed();
 
         });
@@ -42,9 +36,9 @@ public class SideMenuButtons extends VBox {
         retakeButton.setDisable(true);
         retakeButton.setOnAction(e ->
         {
-
             controller.reCaptureImagePressed();
         });
+        retakeButton.disableProperty().bind(controller.getRecaptureButtonDisabledProperty());
 
         this.getChildren().addAll(newButton, retakeButton);
         this.setSpacing(10);
