@@ -3,6 +3,7 @@
  * for Capstone
  */
 
+import Models.ViewManager;
 import Models.WindowFactory;
 import Views.BasicLayout;
 import javafx.application.Application;
@@ -37,8 +38,8 @@ public class AppEntry extends Application{
 
     private void onClose(){
         System.out.println("Terminating FX Application");
+        ViewManager.getManager().getPrimaryStage().killTimer();
         window.close();
-
         Platform.exit();
 
     }

@@ -26,6 +26,9 @@ public abstract class AbstractViewController implements MatProvider{
     SimpleStringProperty saveLocation;
     SimpleIntegerProperty boxSize;
     double[] selectionInfo;
+
+
+
     Metrics metrics;
     Stage stage;
 
@@ -171,13 +174,6 @@ public abstract class AbstractViewController implements MatProvider{
 
     }
 
-    public SimpleStringProperty getLaplaceProperty() {
-        return metrics.getLaplaceProperty();
-    }
-    public SimpleStringProperty getMichelsonContrastProperty() {
-        return metrics.getMichelsonContrastProperty();
-    }
-
 
     public void zoomInPressed(){
         System.out.println("Button was clicked -- zooming In!!");
@@ -212,6 +208,10 @@ public abstract class AbstractViewController implements MatProvider{
                 System.out.println("default");
                 break;
         }
+    }
+
+    public Metrics getMetrics() {
+        return metrics;
     }
 
 }

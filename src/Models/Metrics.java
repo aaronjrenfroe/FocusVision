@@ -1,6 +1,5 @@
 package Models;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -9,18 +8,35 @@ import javafx.beans.property.SimpleStringProperty;
  * for ?
  */
 public class Metrics {
-    private static final int BUFFER_SIZE = 10;
+    private static final int BUFFER_SIZE = 1;
+
+    private static final int EDGE_STRENGTH_INDEX = 0;
+    private static final int CONTRAST_INDEX = 1;
+    private static final int BRIGHTNESS_INDEX = 2;
+    private static final int STANDARD_DEVIATION_INDEX = 3;
+
+    private static final String EDGE_STRENGTH_LABEL = "Laplace Variance: ";
+    private static final String CONTRAST_LABEL = "Michelson Contrast: ";
+    private static final String BRIGHTNESS_LABEL = "Brightness: ";
+    private static final String STANDARD_DEVIATION_LABEL = "Standard Deviation: ";
 
     private SimpleStringProperty lapProperty;
     private SimpleStringProperty mcontrastProperty;
+    private SimpleStringProperty brightnessProperty;
+    private SimpleStringProperty standardDevProperty;
 
-    private double michelsonContrast = 0.0;
-    private double rmsContrast = 0.0;
 
     private double [] mcontrastBuffer;
     private double [] focusBuffer;
+    private double [] brightnessBuffer;
+    private double [] standardDeviationBuffer;
 
-    private int bufferPosition;
+
+
+    // ADD BUFFERS
+    // ADD GETTERS AND SETTERS
+
+    private int[] bufferPositions;
 
 
     public Metrics(){
@@ -28,36 +44,61 @@ public class Metrics {
 
         lapProperty = new SimpleStringProperty();
         mcontrastProperty = new SimpleStringProperty();
+        brightnessProperty = new SimpleStringProperty();
+        standardDevProperty = new SimpleStringProperty();
 
         lapProperty.set("Laplace Variance: n/a");
         mcontrastProperty.set("Michelson Contrast: n/a");
+        brightnessProperty.set("Brightness: n/a");
+        standardDevProperty.set("Standard Deviation: n/a");
 
-        michelsonContrast = 0.0;
-        rmsContrast = 0.0;
 
         focusBuffer = new double[BUFFER_SIZE];
         mcontrastBuffer = new double[BUFFER_SIZE];
-        bufferPosition = 0;
+        brightnessBuffer = new double[BUFFER_SIZE];
+        standardDeviationBuffer = new double[BUFFER_SIZE];
+
+        bufferPositions = new int[4];
 
     }
 
 
-    public SimpleStringProperty getLaplaceProperty() {
-        return lapProperty;
+
+
+    public void setContrast(double michelsonContrast) {
+
+        mcontrastBuffer[bufferPositions[CONTRAST_INDEX]] = michelsonContrast;
+        setProperty(CONTRAST_LABEL + ((int)(getMean(mcontrastBuffer) * 1000))/1000.0, mcontrastProperty, CONTRAST_INDEX);
     }
 
-    public void setMetrics(double laplace, double michelsonContrast) {
-        focusBuffer[bufferPosition] = laplace;
-        mcontrastBuffer[bufferPosition] = michelsonContrast;
-        bufferPosition += 1;
+    public void setEdgeStrength(double laplace) {
+        focusBuffer[bufferPositions[EDGE_STRENGTH_INDEX]] = laplace;
 
-        if (bufferPosition == BUFFER_SIZE){
-            bufferPosition = 0;
+        setProperty(EDGE_STRENGTH_LABEL + (int) Math.round(getMean(focusBuffer)), lapProperty, EDGE_STRENGTH_INDEX);
+    }
+
+    public void setBrightness(double brightness) {
+
+        focusBuffer[bufferPositions[BRIGHTNESS_INDEX]] = brightness;
+
+        setProperty(BRIGHTNESS_LABEL + (int) Math.round(getMean(focusBuffer)) + "%", brightnessProperty, BRIGHTNESS_INDEX);
+    }
+
+    public void setStandardDeviation(double stdDev) {
+
+        focusBuffer[bufferPositions[STANDARD_DEVIATION_INDEX]] = stdDev;
+        setProperty(STANDARD_DEVIATION_LABEL+ (int) Math.round(getMean(focusBuffer)), standardDevProperty, STANDARD_DEVIATION_INDEX);
+    }
+
+    private void  setProperty(String value, SimpleStringProperty property, int bufferIndex){
+        bufferPositions[bufferIndex] += 1;
+
+        if (bufferPositions[bufferIndex] == BUFFER_SIZE){
+            bufferPositions[bufferIndex] = 0;
         }
 
         Platform.runLater(() -> {
-            lapProperty.set("Laplace Variance: " + (int) Math.round(getMean(focusBuffer)));
-            mcontrastProperty.set("Michelson Contrast: " + ((int)(getMean(mcontrastBuffer) * 1000))/1000.0);
+            property.set(value);
         });
     }
 
@@ -72,13 +113,18 @@ public class Metrics {
         return mcontrastProperty;
     }
 
-    public void setRmsContrast(double rmsContrast) {
-        this.rmsContrast = rmsContrast;
+    public SimpleStringProperty getLaplaceProperty() {
+        return lapProperty;
     }
 
-    public double getRmsContrastProperty() {
-        return rmsContrast;
+    public SimpleStringProperty getBrightnessProperty() {
+        return brightnessProperty;
     }
+
+    public SimpleStringProperty getStandardDevProperty() {
+        return standardDevProperty;
+    }
+
 
 
 

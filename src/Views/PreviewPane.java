@@ -93,12 +93,16 @@ public class PreviewPane extends AnchorPane {
 
         Label focus = new Label();
         Label contrast = new Label();
+        Label brightness = new Label();
+        Label stdDev = new Label();
 
-        focus.textProperty().bind(controller.getLaplaceProperty());
-        contrast.textProperty().bind(controller.getMichelsonContrastProperty());
+        focus.textProperty().bind(controller.getMetrics().getLaplaceProperty());
+        contrast.textProperty().bind(controller.getMetrics().getMichelsonContrastProperty());
+        brightness.textProperty().bind(controller.getMetrics().getBrightnessProperty());
+        stdDev.textProperty().bind(controller.getMetrics().getStandardDevProperty());
 
-        vbox.getChildren().add(focus);
-        vbox.getChildren().add(contrast);
+        vbox.getChildren().addAll(focus, contrast, stdDev, brightness);
+
 
         pane1.setBottom(vbox);
 

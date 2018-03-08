@@ -108,4 +108,12 @@ public class DynamicPreviewController extends AbstractViewController {
     public SimpleBooleanProperty getRecaptureButtonDisabledProperty() {
         return recaptureButtonDisabledProperty;
     }
+
+    public void killTimer(){
+        this.timer.cancel();
+        this.timer.purge();
+        System.out.println("Controller Finalised");
+    }
+
+
 }
