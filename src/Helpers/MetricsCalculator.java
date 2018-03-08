@@ -22,7 +22,6 @@ public class MetricsCalculator {
                 Mat mat2 = mat.submat(centerY - radius, centerY + radius, centerX - radius, centerX + radius);
 
 
-
                 Mat matGray = new Mat();
                 Imgproc.cvtColor(mat2, matGray, Imgproc.COLOR_BGR2GRAY);
 
@@ -41,7 +40,7 @@ public class MetricsCalculator {
                 MatOfDouble mean = new MatOfDouble();
                 MatOfDouble standardDev = new MatOfDouble();
 
-                // Given a Mat, this calculates the mean and Standard Deviation and sets the mean and standardDev variables
+                // Given a Mat, this calculates the ?mean? and Standard Deviation and sets the mean and standardDev variables
                 // i'm not sure what this mean as at it can be negative between -1 and 1
                 Core.meanStdDev(laplaceMat, mean, standardDev);
 
@@ -49,18 +48,16 @@ public class MetricsCalculator {
                 Scalar mean2 = Core.mean(matGray);
 
                 // Laplace
-                Core.MinMaxLocResult minMax =  Core.minMaxLoc(matGray);
-
                 double laplaceBasedEdgeStrengthMetric = Math.pow(standardDev.get(0, 0)[0], 2);
 
+
+                Core.MinMaxLocResult minMax =  Core.minMaxLoc(matGray);
                 double mContrast = (minMax.maxVal - minMax.minVal) / (minMax.maxVal + minMax.minVal);
 
                 metrics.setContrast(mContrast);
                 metrics.setEdgeStrength(laplaceBasedEdgeStrengthMetric);
-                // need to show mean
-                metrics.setBrightness((mean2.val[0] / 255.0) * 100);
 
-                System.out.println(mean.get(0,0)[0]);
+                metrics.setBrightness((mean2.val[0] / 255.0) * 100);
                 metrics.setStandardDeviation(standardDev.get(0, 0)[0]);
 
 
