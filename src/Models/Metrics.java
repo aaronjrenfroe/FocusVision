@@ -3,129 +3,115 @@ package Models;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.EnumMap;
+
 /**
  * Created by AaronR on 1/26/18.
  * for ?
  */
 public class Metrics {
-    private static final int BUFFER_SIZE = 1;
+    // ============= HOW TO ADD A NEW METRIC =================
+    // you need to add it to the MetricEnum class file
+    // it's easy go look at it...
+    // and then follow the steps enumerated below
+    private static  final int NUMBER_OF_METRICS = MetricEnum.values().length;
 
-    private static final int EDGE_STRENGTH_INDEX = 0;
-    private static final int CONTRAST_INDEX = 1;
-    private static final int BRIGHTNESS_INDEX = 2;
-    private static final int STANDARD_DEVIATION_INDEX = 3;
+    private static final int STATIC_BUFFER__SIZE = 1;
+    private static final int DYNAMIC_BUFFER_SIZE = 3;
+    private int bufferSize;
 
+    // Step 1) Give your metric a label
     private static final String EDGE_STRENGTH_LABEL = "Laplace Variance: ";
     private static final String CONTRAST_LABEL = "Michelson Contrast: ";
     private static final String BRIGHTNESS_LABEL = "Brightness: ";
     private static final String STANDARD_DEVIATION_LABEL = "Standard Deviation: ";
 
-    private SimpleStringProperty lapProperty;
-    private SimpleStringProperty mcontrastProperty;
-    private SimpleStringProperty brightnessProperty;
-    private SimpleStringProperty standardDevProperty;
-
-
-    private double [] mcontrastBuffer;
-    private double [] focusBuffer;
-    private double [] brightnessBuffer;
-    private double [] standardDeviationBuffer;
-
-
+    private SimpleStringProperty [] properties;
 
     // ADD BUFFERS
     // ADD GETTERS AND SETTERS
 
     private int[] bufferPositions;
+    private double[][] buffers;
+
+    public Metrics(boolean isLive){
+
+        bufferSize = isLive ? DYNAMIC_BUFFER_SIZE : STATIC_BUFFER__SIZE;
 
 
-    public Metrics(){
+        properties = new SimpleStringProperty[NUMBER_OF_METRICS];
+        buffers = new double[NUMBER_OF_METRICS][bufferSize];
 
+        for (int i = 0; i < properties.length; i++) {
+            properties[i] = new SimpleStringProperty();
+            buffers[i] = new double[bufferSize];
+        }
 
-        lapProperty = new SimpleStringProperty();
-        mcontrastProperty = new SimpleStringProperty();
-        brightnessProperty = new SimpleStringProperty();
-        standardDevProperty = new SimpleStringProperty();
+        // Step 2) Set your Label
+        properties[MetricEnum.EDGE_STRENGTH.ordinal()].set(EDGE_STRENGTH_LABEL + "n/a");
+        properties[MetricEnum.M_CONTRAST.ordinal()].set(CONTRAST_LABEL + "n/a");
+        properties[MetricEnum.BRIGHTNESS.ordinal()].set(BRIGHTNESS_LABEL + "n/a");
+        properties[MetricEnum.STANDARD_DEVIATION.ordinal()].set(STANDARD_DEVIATION_LABEL + "n/a");
 
-        lapProperty.set("Laplace Variance: n/a");
-        mcontrastProperty.set("Michelson Contrast: n/a");
-        brightnessProperty.set("Brightness: n/a");
-        standardDevProperty.set("Standard Deviation: n/a");
-
-
-        focusBuffer = new double[BUFFER_SIZE];
-        mcontrastBuffer = new double[BUFFER_SIZE];
-        brightnessBuffer = new double[BUFFER_SIZE];
-        standardDeviationBuffer = new double[BUFFER_SIZE];
-
-        bufferPositions = new int[4];
+        bufferPositions = new int[NUMBER_OF_METRICS];
 
     }
 
-
-
-
+    // Step 3) create a SETTER for it
     public void setContrast(double michelsonContrast) {
 
-        mcontrastBuffer[bufferPositions[CONTRAST_INDEX]] = michelsonContrast;
-        setProperty(CONTRAST_LABEL + ((int)(getMean(mcontrastBuffer) * 1000))/1000.0, mcontrastProperty, CONTRAST_INDEX);
+        //mcontrastBuffer[bufferPositions[CONTRAST_INDEX]] = michelsonContrast;
+        String string = CONTRAST_LABEL + ((int)(getMeanFor(MetricEnum.M_CONTRAST) * 1000))/1000.0;
+        setProperty(michelsonContrast, string, MetricEnum.EDGE_STRENGTH);
     }
 
     public void setEdgeStrength(double laplace) {
-        focusBuffer[bufferPositions[EDGE_STRENGTH_INDEX]] = laplace;
-
-        setProperty(EDGE_STRENGTH_LABEL + (int) Math.round(getMean(focusBuffer)), lapProperty, EDGE_STRENGTH_INDEX);
+        //focusBuffer[bufferPositions[EDGE_STRENGTH_INDEX]] = laplace;
+        String string = EDGE_STRENGTH_LABEL + (int) Math.round(getMeanFor(MetricEnum.EDGE_STRENGTH));
+        setProperty(laplace,string, MetricEnum.EDGE_STRENGTH);
     }
 
     public void setBrightness(double brightness) {
 
-        focusBuffer[bufferPositions[BRIGHTNESS_INDEX]] = brightness;
-
-        setProperty(BRIGHTNESS_LABEL + (int) Math.round(getMean(focusBuffer)) + "%", brightnessProperty, BRIGHTNESS_INDEX);
+        //focusBuffer[bufferPositions[BRIGHTNESS_INDEX]] = brightness;
+        String string = "" + ((int)(getMeanFor(MetricEnum.M_CONTRAST) * 1000))/1000.0;
+        setProperty(brightness,BRIGHTNESS_LABEL + (int) Math.round(getMeanFor(MetricEnum.BRIGHTNESS)) + "%", MetricEnum.BRIGHTNESS);
     }
 
     public void setStandardDeviation(double stdDev) {
 
-        focusBuffer[bufferPositions[STANDARD_DEVIATION_INDEX]] = stdDev;
-        setProperty(STANDARD_DEVIATION_LABEL+ (int) Math.round(getMean(focusBuffer)), standardDevProperty, STANDARD_DEVIATION_INDEX);
+        //focusBuffer[bufferPositions[STANDARD_DEVIATION_INDEX]] = stdDev;
+        String string = STANDARD_DEVIATION_LABEL+ (int) Math.round(getMeanFor(MetricEnum.STANDARD_DEVIATION));
+
+        setProperty(stdDev, string, MetricEnum.STANDARD_DEVIATION);
     }
 
-    private void  setProperty(String value, SimpleStringProperty property, int bufferIndex){
-        bufferPositions[bufferIndex] += 1;
+    private void  setProperty(double value, String valueAsString, MetricEnum property){
+        int index = property.ordinal();
+        buffers[index][bufferPositions[property.ordinal()]] = value;
 
-        if (bufferPositions[bufferIndex] == BUFFER_SIZE){
-            bufferPositions[bufferIndex] = 0;
+        bufferPositions[index] += 1;
+
+        if (bufferPositions[index] == bufferSize){
+            bufferPositions[index] = 0;
         }
-
-        Platform.runLater(() -> {
-            property.set(value);
-        });
+        
+        Platform.runLater(() -> properties[index].set(valueAsString));
     }
 
-    private double getMean(double[] array){
+    private double getMeanFor(MetricEnum property){
+        double [] array = buffers[property.ordinal()];
+
         double sum = 0.0;
         for (double d : array) sum += d;
         return sum/array.length;
     }
 
-
-    public SimpleStringProperty getMichelsonContrastProperty() {
-        return mcontrastProperty;
+    public SimpleStringProperty[] getProperties() {
+        return properties;
     }
 
-    public SimpleStringProperty getLaplaceProperty() {
-        return lapProperty;
+    public double getValueFor(MetricEnum property){
+        return getMeanFor(property);
     }
-
-    public SimpleStringProperty getBrightnessProperty() {
-        return brightnessProperty;
-    }
-
-    public SimpleStringProperty getStandardDevProperty() {
-        return standardDevProperty;
-    }
-
-
-
-
 }

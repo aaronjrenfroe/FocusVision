@@ -2,7 +2,9 @@ package Views;
 
 import Helpers.GlobalSettings;
 import Models.AbstractViewController;
+import Models.Metrics;
 import Processing.*;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -91,18 +93,27 @@ public class PreviewPane extends AnchorPane {
         VBox vbox = new VBox();
         vbox.setStyle("-fx-background-color: #FFFFFF;");
 
-        Label focus = new Label();
-        Label contrast = new Label();
-        Label brightness = new Label();
-        Label stdDev = new Label();
-
-        focus.textProperty().bind(controller.getMetrics().getLaplaceProperty());
-        contrast.textProperty().bind(controller.getMetrics().getMichelsonContrastProperty());
-        brightness.textProperty().bind(controller.getMetrics().getBrightnessProperty());
-        stdDev.textProperty().bind(controller.getMetrics().getStandardDevProperty());
-
-        vbox.getChildren().addAll(focus, contrast, stdDev, brightness);
-
+        SimpleStringProperty[] metricProperties = controller.getMetrics().getProperties();
+        // TODO: REFACOTOR SO we LIMIT the NUMBER OF ITEMS IN VBOX
+        /*
+        Currently
+        Label 1
+        Label 2
+        Label 3
+        Label 4
+        Label 5
+        Label 6
+         */
+        // TO
+        /*
+        Label 1   Label 3    Label 5
+        Label 2   Label 4    Label 6
+         */
+        for (int i = 0; i < metricProperties.length; i++) {
+            Label metricLabel = new Label();
+            metricLabel.textProperty().bind(metricProperties[i]);
+            vbox.getChildren().add(metricLabel);
+        }
 
         pane1.setBottom(vbox);
 

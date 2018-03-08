@@ -32,7 +32,6 @@ public class DynamicPreviewController extends AbstractViewController {
 
         recaptureButtonDisabledProperty = new SimpleBooleanProperty();
         recaptureButtonDisabledProperty.set(true);
-
         cap = VideoCap.getInstance();
         startCameraInit();
 

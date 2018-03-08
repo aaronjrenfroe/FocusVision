@@ -27,8 +27,6 @@ public abstract class AbstractViewController implements MatProvider{
     SimpleIntegerProperty boxSize;
     double[] selectionInfo;
 
-
-
     Metrics metrics;
     Stage stage;
 
@@ -37,7 +35,13 @@ public abstract class AbstractViewController implements MatProvider{
         imageView = new ImageView();
         this.windowName = windowName;
         System.out.println(saveLocation);
-        metrics = new Metrics();
+
+        if(this.getClass() == DynamicPreviewController.class) {
+            metrics = new Metrics(true);
+        }else{
+            metrics = new Metrics(false);
+        }
+
         patientName = new SimpleStringProperty();
         saveLocation = new SimpleStringProperty();
         boxSize = new SimpleIntegerProperty();
@@ -46,8 +50,6 @@ public abstract class AbstractViewController implements MatProvider{
         saveLocation.set(getDefaultSaveLocation() + "/Desktop/FocusVision/Images/");
         File file = new File(saveLocation.getValue());
         file.mkdirs();
-
-
 
     }
 

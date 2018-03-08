@@ -56,7 +56,6 @@ public class MetricsCalculator {
 
                 metrics.setContrast(mContrast);
                 metrics.setEdgeStrength(laplaceBasedEdgeStrengthMetric);
-
                 metrics.setBrightness((mean2.val[0] / 255.0) * 100);
                 metrics.setStandardDeviation(standardDev.get(0, 0)[0]);
 
