@@ -71,7 +71,7 @@ public class VideoCap {
     public void nextCamera(){
         if(cameraCount > 1 || currentCamera == -1) {
             currentCamera = ++currentCamera % cameraCount;
-            cap.open(currentCamera);
+            cap.open(0);
         }
     }
 
@@ -101,8 +101,8 @@ public class VideoCap {
 //            double heightScale = this.width / nativeWidth;
 //
 //            Imgproc.resize(mat2Img.mat, mat, new Size(width, heightScale * mat2Img.mat.height()));
-
-
+//
+//
             return mat2Img.mat.clone();
         }
     }
