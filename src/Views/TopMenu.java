@@ -1,6 +1,7 @@
 package Views;
 
 import Models.AbstractViewController;
+import Models.DynamicPreviewController;
 import Models.StaticViewController;
 import Processing.VideoCap;
 import javafx.scene.control.Menu;
@@ -73,42 +74,48 @@ public class TopMenu extends MenuBar {
         Menu fileMenu = new Menu("_File");
         MenuItem openOption = new MenuItem("Open");
 
-        openOption.setOnAction(e -> {
+        // we need functions that are specific to DynamicPreviewController
 
-            controller.openImagePressed();
+        if(controller.getClass() == DynamicPreviewController.class) {
+            DynamicPreviewController dController = (DynamicPreviewController) controller;
 
-        });
+            openOption.setOnAction(e -> {
 
-        MenuItem sep = new SeparatorMenuItem();
-        MenuItem exitOption = new MenuItem("Exit");
-        fileMenu.getItems().addAll(openOption, sep, exitOption);
+                controller.openImagePressed();
+
+            });
+
+            MenuItem sep = new SeparatorMenuItem();
+            MenuItem exitOption = new MenuItem("Exit");
+            fileMenu.getItems().addAll(openOption, sep, exitOption);
 
 
-        Menu viewMenu = new Menu("_View");
-        MenuItem changeCamera = new MenuItem("Change Camera");
-        changeCamera.setOnAction(e -> {
-            VideoCap.getInstance().nextCamera();
-        });
+            Menu viewMenu = new Menu("_View");
+            MenuItem changeCamera = new MenuItem("Change Camera");
+            changeCamera.setOnAction(e -> {
+                dController.changeCameraPressed();
+            });
 
-        MenuItem detectCameras = new MenuItem("Detect Cameras");
-        detectCameras.setOnAction(e -> {
-            VideoCap.getInstance().countCameras();
-        });
+            MenuItem detectCameras = new MenuItem("Detect Cameras");
+            detectCameras.setOnAction(e -> {
+                dController.recountCameraPressed();
+            });
 
-        MenuItem boxSize = new MenuItem("Change box size");
-        MenuItem hideBox = new MenuItem("Hide Box");
+            MenuItem boxSize = new MenuItem("Change box size");
+            MenuItem hideBox = new MenuItem("Hide Box");
 
-        viewMenu.getItems().addAll(changeCamera, detectCameras,boxSize, hideBox);
+            viewMenu.getItems().addAll(changeCamera, detectCameras, boxSize, hideBox);
 
-        // Help Menu
-        Menu helpMenu = new Menu("_Help");
-        MenuItem openGithub = new MenuItem("View On Github");
-        openGithub.setOnAction(e -> {
-            openWebpage("https://github.com/aaronjrenfroe/FocusVision");
-        });
-        helpMenu.getItems().addAll(openGithub);
+            // Help Menu
+            Menu helpMenu = new Menu("_Help");
+            MenuItem openGithub = new MenuItem("View On Github");
+            openGithub.setOnAction(e -> {
+                openWebpage("https://github.com/aaronjrenfroe/FocusVision");
+            });
+            helpMenu.getItems().addAll(openGithub);
 
-        this.getMenus().addAll(fileMenu, viewMenu, helpMenu);
+            this.getMenus().addAll(fileMenu, viewMenu, helpMenu);
+        }
     }
 
 

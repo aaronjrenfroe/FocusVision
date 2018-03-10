@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 /**
  * Created by AaronR on 1/22/18.
@@ -49,15 +50,18 @@ public class SideMenu extends BorderPane {
         //setTop(new SideMenuButtons());
 
         nameLable = new Label("Name");
+        nameLable.setTextFill(Color.WHITE);
         textFieldName = new TextField();
         textFieldName.setMaxWidth(GlobalSettings.MENU_WIDTH-20);
         textFieldName.setText(controller.getPatientName());
 
         idLable = new Label("Save Location");
+        idLable.setTextFill(Color.WHITE);
         textFieldLocation = new TextField();
         textFieldLocation.setMaxWidth(GlobalSettings.MENU_WIDTH-20);
         textFieldLocation.setText(controller.getSaveLocation());
 
+        //textFieldName.textProperty().bind(controller.getPatientNameProperty());
 
         textFieldName.setOnKeyReleased(e -> {
             controller.setPatientName(textFieldName.getText());

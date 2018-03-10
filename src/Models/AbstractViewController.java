@@ -26,6 +26,7 @@ public abstract class AbstractViewController implements MatProvider{
     SimpleStringProperty saveLocation;
     SimpleIntegerProperty boxSize;
     double[] selectionInfo;
+
     Metrics metrics;
     Stage stage;
 
@@ -34,7 +35,13 @@ public abstract class AbstractViewController implements MatProvider{
         imageView = new ImageView();
         this.windowName = windowName;
         System.out.println(saveLocation);
-        metrics = new Metrics();
+
+        if(this.getClass() == DynamicPreviewController.class) {
+            metrics = new Metrics(true);
+        }else{
+            metrics = new Metrics(false);
+        }
+
         patientName = new SimpleStringProperty();
         saveLocation = new SimpleStringProperty();
         boxSize = new SimpleIntegerProperty();
@@ -43,8 +50,6 @@ public abstract class AbstractViewController implements MatProvider{
         saveLocation.set(getDefaultSaveLocation() + "/Desktop/FocusVision/Images/");
         File file = new File(saveLocation.getValue());
         file.mkdirs();
-
-
 
     }
 
@@ -69,16 +74,21 @@ public abstract class AbstractViewController implements MatProvider{
             extension = filePath.substring(i+1);
         }
 
+        double selectInfo[] = ImageHelper.parseSelectionFromName(file.getName());
+
         if (extension.compareTo("png") == 0){
             Mat mat = ImageHelper.openImage(file);
-           Stage stage = WindowFactory.createStaticWindow(this, mat, file.getAbsolutePath());
+           Stage stage = WindowFactory.createStaticWindow(this, mat, file.getAbsolutePath(), file.getName(), selectInfo);
            stage.show();
         }
+
     }
 
     public String getPatientName() {
         return patientName.get();
     }
+
+    public SimpleStringProperty getPatientNameProperty() {return patientName;}
 
     public SimpleStringProperty patientNameProperty() {
         return patientName;
@@ -171,13 +181,6 @@ public abstract class AbstractViewController implements MatProvider{
 
     }
 
-    public SimpleStringProperty getLaplaceProperty() {
-        return metrics.getLaplaceProperty();
-    }
-    public SimpleStringProperty getMichelsonContrastProperty() {
-        return metrics.getMichelsonContrastProperty();
-    }
-
 
     public void zoomInPressed(){
         System.out.println("Button was clicked -- zooming In!!");
@@ -212,6 +215,10 @@ public abstract class AbstractViewController implements MatProvider{
                 System.out.println("default");
                 break;
         }
+    }
+
+    public Metrics getMetrics() {
+        return metrics;
     }
 
 }

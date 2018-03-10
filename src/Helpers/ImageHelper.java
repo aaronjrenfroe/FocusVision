@@ -51,4 +51,12 @@ public class ImageHelper {
         return mat;
 
     }
+
+    public static double[] parseSelectionFromName(String filename){
+        double selectInfo[] = new double[3];
+
+
+
+        return selectInfo;
+    }
 }

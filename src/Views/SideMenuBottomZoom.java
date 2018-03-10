@@ -3,7 +3,9 @@ import Models.AbstractViewController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -13,7 +15,7 @@ import javafx.stage.Stage;
 public class SideMenuBottomZoom extends HBox
 {
     Button zoomIn;
-    Text percentage;  // = new Text(10, 50, "100%");
+    Label percentage;  // = new Text(10, 50, "100%");
     Button zoomOut;
     AbstractViewController controller;
     ScrollButtons arrows;
@@ -40,9 +42,9 @@ public class SideMenuBottomZoom extends HBox
             controller.zoomInPressed();
         });
 
-        percentage = new Text();
+        percentage = new Label();
         percentage.setText("100%");
-        percentage.setStyle("-fx-stroke: white;");
+        percentage.setTextFill(Color.WHITE);
 
         zoomOut = new Button();
         zoomOut.setText("-");
