@@ -84,8 +84,8 @@ public class StaticViewController extends AbstractViewController {
 
         try {
             //metrics in order displayed: xPercent, yPercent, Radius
-            outputName = outputName.replace(" ", "_") + "__" + selectionInfo[0] + "__" + selectionInfo[1] +
-                    "__" + selectionInfo[2] + ".png";
+            outputName = outputName.replace(" ", "_") + "_" + selectionInfo[0] + "_" + selectionInfo[1] +
+                    "_" + selectionInfo[2] + ".png";
         } catch (NullPointerException e) {
             //metrics not displayed because there is no box in image
             outputName = outputName.replace(" ", "_") + ".png";
