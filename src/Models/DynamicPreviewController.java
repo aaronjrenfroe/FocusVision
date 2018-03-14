@@ -26,6 +26,7 @@ public class DynamicPreviewController extends AbstractViewController {
     VideoCap cap;
     SimpleBooleanProperty recaptureButtonDisabledProperty;
 
+
     public DynamicPreviewController(Stage stage) {
         super("FocusVision", stage);
         ViewManager.getManager().setPrimaryController(this);
@@ -112,6 +113,10 @@ public class DynamicPreviewController extends AbstractViewController {
         this.timer.cancel();
         this.timer.purge();
         System.out.println("Controller Finalised");
+    }
+
+    public void updateWidth(double width){
+        VideoCap.getInstance().setWidth(width);
     }
 
 

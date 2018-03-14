@@ -60,33 +60,38 @@ public class Metrics {
     // Step 3) create a SETTER for it
     public void setContrast(double michelsonContrast) {
 
-        //mcontrastBuffer[bufferPositions[CONTRAST_INDEX]] = michelsonContrast;
+        updateBuffer(michelsonContrast, MetricEnum.M_CONTRAST);
         String string = CONTRAST_LABEL + ((int)(getMeanFor(MetricEnum.M_CONTRAST) * 1000))/1000.0;
-        setProperty(michelsonContrast, string, MetricEnum.M_CONTRAST);
+        setProperty(string, MetricEnum.M_CONTRAST);
     }
 
     public void setEdgeStrength(double laplace) {
-        //focusBuffer[bufferPositions[EDGE_STRENGTH_INDEX]] = laplace;
+
+        updateBuffer(laplace, MetricEnum.EDGE_STRENGTH);
         String string = EDGE_STRENGTH_LABEL + (int) Math.round(getMeanFor(MetricEnum.EDGE_STRENGTH));
-        setProperty(laplace,string, MetricEnum.EDGE_STRENGTH);
+        setProperty(string, MetricEnum.EDGE_STRENGTH);
     }
 
     public void setBrightness(double brightness) {
 
-        //focusBuffer[bufferPositions[BRIGHTNESS_INDEX]] = brightness;
-        String string = "" + ((int)(getMeanFor(MetricEnum.M_CONTRAST) * 1000))/1000.0;
-        setProperty(brightness,BRIGHTNESS_LABEL + (int) Math.round(getMeanFor(MetricEnum.BRIGHTNESS)) + "%", MetricEnum.BRIGHTNESS);
+        updateBuffer(brightness, MetricEnum.BRIGHTNESS);
+        String string = BRIGHTNESS_LABEL + ((int)(getMeanFor(MetricEnum.M_CONTRAST) * 1000))/1000.0 + "%";
+        setProperty(string, MetricEnum.BRIGHTNESS);
     }
 
     public void setStandardDeviation(double stdDev) {
 
-        //focusBuffer[bufferPositions[STANDARD_DEVIATION_INDEX]] = stdDev;
-        String string = STANDARD_DEVIATION_LABEL+ (int) Math.round(getMeanFor(MetricEnum.STANDARD_DEVIATION));
-
-        setProperty(stdDev, string, MetricEnum.STANDARD_DEVIATION);
+        updateBuffer(stdDev, MetricEnum.STANDARD_DEVIATION);
+        String string = STANDARD_DEVIATION_LABEL+ ((int) Math.round((getMeanFor(MetricEnum.STANDARD_DEVIATION) * 1000)) / 1000.0) ;
+        setProperty(string, MetricEnum.STANDARD_DEVIATION);
     }
 
-    private void  setProperty(double value, String valueAsString, MetricEnum property){
+    private void setProperty(String valueAsString, MetricEnum property){
+        int index = property.ordinal();
+        Platform.runLater(() -> properties[index].set(valueAsString));
+    }
+
+    private void updateBuffer(double value, MetricEnum property){
         int index = property.ordinal();
         buffers[index][bufferPositions[property.ordinal()]] = value;
 
@@ -95,8 +100,6 @@ public class Metrics {
         if (bufferPositions[index] == bufferSize){
             bufferPositions[index] = 0;
         }
-        
-        Platform.runLater(() -> properties[index].set(valueAsString));
     }
 
     private double getMeanFor(MetricEnum property){
@@ -106,6 +109,7 @@ public class Metrics {
         for (double d : array) sum += d;
         return sum/array.length;
     }
+
 
     public SimpleStringProperty[] getProperties() {
         return properties;

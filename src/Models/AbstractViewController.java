@@ -76,10 +76,11 @@ public abstract class AbstractViewController implements MatProvider{
 
         double selectInfo[] = ImageHelper.parseSelectionFromName(file.getName());
 
-        if (extension.compareTo("png") == 0){
+        if (extension.contains("png") || extension.contains("tiff") || extension.contains("tif") || extension.contains("jpg") || extension.contains("jpeg")){
+
             Mat mat = ImageHelper.openImage(file);
-           Stage stage = WindowFactory.createStaticWindow(this, mat, file.getAbsolutePath(), file.getName(), selectInfo);
-           stage.show();
+            Stage stage = WindowFactory.createStaticWindow(this, mat, file.getAbsolutePath(), file.getName(), selectInfo);
+            stage.show();
         }
 
     }

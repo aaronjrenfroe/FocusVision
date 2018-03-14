@@ -54,6 +54,7 @@ public class PreviewPane extends AnchorPane {
         preview.fitWidthProperty().bind(widthProperty());
 
         pane1.setCenter(preview);
+
         widthProperty().addListener( l -> {
             System.out.println(l);
         });
@@ -72,7 +73,10 @@ public class PreviewPane extends AnchorPane {
         square.setVisible(false);
         square.setMouseTransparent(true);
 
+
+
         preview.setOnMouseClicked(e -> {
+
             if(e.getClickCount() == 2){
                 square.setVisible(false);
                 e.consume();
@@ -90,32 +94,36 @@ public class PreviewPane extends AnchorPane {
 
     private void setLayout(){
         
-        VBox vbox = new VBox();
-        vbox.setStyle("-fx-background-color: #FFFFFF;");
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+
+        hbox.setStyle("-fx-background-color: #FFFFFF;");
 
         SimpleStringProperty[] metricProperties = controller.getMetrics().getProperties();
         // TODO: REFACOTOR SO we LIMIT the NUMBER OF ITEMS IN VBOX
-        /*
-        Currently
-        Label 1
-        Label 2
-        Label 3
-        Label 4
-        Label 5
-        Label 6
-         */
-        // TO
-        /*
-        Label 1   Label 3    Label 5
-        Label 2   Label 4    Label 6
-         */
-        for (int i = 0; i < metricProperties.length; i++) {
+
+
+        for (int i = 0; i < metricProperties.length; i+=2) {
+
+            VBox vbox = new VBox();
+            vbox.setStyle("-fx-background-color: #FFFFFF;");
+
+            // Top Label
             Label metricLabel = new Label();
             metricLabel.textProperty().bind(metricProperties[i]);
             vbox.getChildren().add(metricLabel);
+
+            // Bottom Label
+            if(i + 1 <= metricProperties.length) {
+                Label metricLabel2 = new Label();
+                metricLabel2.textProperty().bind(metricProperties[i + 1]);
+                vbox.getChildren().add(metricLabel2);
+            }
+
+            hbox.getChildren().add(vbox);
         }
 
-        pane1.setBottom(vbox);
+        pane1.setBottom(hbox);
 
     }
 

@@ -29,6 +29,11 @@ public class VideoCap {
 
     private VideoCapture cap;
     private Mat2Image mat2Img;
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
     private double width;
 
 
@@ -53,6 +58,7 @@ public class VideoCap {
         }
         nativeSize = mat2Img.mat.size();
         System.out.println("Size: " +nativeSize);
+        width = nativeSize.width;
 
     }
 
@@ -95,15 +101,15 @@ public class VideoCap {
             return null;
         }else{
 //            If we would like to display a lower resolution image
-//            Mat mat = new Mat();
-//            double nativeWidth = mat2Img.mat.width();
+            Mat mat = new Mat();
+            double nativeWidth = mat2Img.mat.width();
+
+            double heightScale = this.width / nativeWidth;
+
+            Imgproc.resize(mat2Img.mat, mat, new Size(width, heightScale * mat2Img.mat.height()));
 //
-//            double heightScale = this.width / nativeWidth;
 //
-//            Imgproc.resize(mat2Img.mat, mat, new Size(width, heightScale * mat2Img.mat.height()));
-//
-//
-            return mat2Img.mat.clone();
+            return mat.clone();
         }
     }
 

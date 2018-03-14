@@ -60,11 +60,11 @@ public class ImageHelper {
         String temp[];
 
         temp = filename.split("_");  // give temp array values for split string
-
-        selectInfo[2] = Double.parseDouble(temp[temp.length-1]);  // radius
-        selectInfo[1] = Double.parseDouble(temp[temp.length-2]);  // y
-        selectInfo[0] = Double.parseDouble(temp[temp.length-3]);  // x
-        
+        if(temp.length > 3) {
+            selectInfo[2] = Double.parseDouble(temp[temp.length - 1]);  // radius
+            selectInfo[1] = Double.parseDouble(temp[temp.length - 2]);  // y
+            selectInfo[0] = Double.parseDouble(temp[temp.length - 3]);  // x
+        }
         return selectInfo;
     }
 }
