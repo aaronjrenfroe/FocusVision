@@ -8,6 +8,7 @@ import org.opencv.imgproc.Imgproc;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -50,5 +51,20 @@ public class ImageHelper {
         mat.put(bImage.getWidth(), bImage.getHeight(), ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData());
         return mat;
 
+    }
+
+    public static double[] parseSelectionFromName(String filename){
+        double selectInfo[] = new double[3];  // create array for x y and radius
+        filename = filename.substring(0, filename.length()-4);  // take out .png from file name
+
+        String temp[];
+
+        temp = filename.split("_");  // give temp array values for split string
+
+        selectInfo[2] = Double.parseDouble(temp[temp.length-1]);  // radius
+        selectInfo[1] = Double.parseDouble(temp[temp.length-2]);  // y
+        selectInfo[0] = Double.parseDouble(temp[temp.length-3]);  // x
+        
+        return selectInfo;
     }
 }

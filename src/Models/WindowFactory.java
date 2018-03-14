@@ -44,12 +44,14 @@ public class WindowFactory {
     }
 
 
-    public static Stage createStaticWindow(AbstractViewController creator, Mat mat, String windowTitle) {
+    public static Stage createStaticWindow(AbstractViewController creator, Mat mat, String windowTitle, String fileName, double selectionInfo[]) {
 
         Stage newWindow = new Stage();
 
         StaticViewController controller = new StaticViewController(mat, newWindow);
-        controller.setPatientName(creator.getPatientName());
+
+        controller.setPatientName(fileName);
+
         controller.setSaveLocation(creator.getSaveLocation());
 
         TopMenu tm = new TopMenu("VIEWER", controller);
@@ -74,6 +76,10 @@ public class WindowFactory {
         newWindow.setOnCloseRequest(e -> {
             ViewManager.getManager().removeStage(controller);
         });
+
+        try {
+            controller.updateSelection(selectionInfo[0], selectionInfo[1], selectionInfo[2]);
+        } catch (NullPointerException e) {}
 
         return newWindow;
 

@@ -15,6 +15,8 @@ import org.opencv.imgproc.Imgproc;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
+import java.util.Random;
+
 
 /**
  * Created by AaronR on 2/25/18.
@@ -23,7 +25,7 @@ import java.io.File;
 
 public class StaticViewController extends AbstractViewController {
     // pass it a Mat or pass it a png
-
+    Random rand = new Random();
     Mat mat;
 
     public StaticViewController(Mat image, Stage stage){
@@ -76,8 +78,19 @@ public class StaticViewController extends AbstractViewController {
                 System.out.println("DIR created");
             }
         }
+
+
         String outputName = this.getSaveLocation()+"/"+this.getPatientName();
-        outputName = outputName.replace(" ", "_")+".png";
+
+        try {
+            //metrics in order displayed: xPercent, yPercent, Radius
+            outputName = outputName.replace(" ", "_") + "_" + selectionInfo[0] + "_" + selectionInfo[1] +
+                    "_" + selectionInfo[2] + ".png";
+        } catch (NullPointerException e) {
+            //metrics not displayed because there is no box in image
+            outputName = outputName.replace(" ", "_") + ".png";
+        }
+
         System.out.println();
         File file = new File(outputName);
 

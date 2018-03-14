@@ -62,7 +62,7 @@ public class Metrics {
 
         //mcontrastBuffer[bufferPositions[CONTRAST_INDEX]] = michelsonContrast;
         String string = CONTRAST_LABEL + ((int)(getMeanFor(MetricEnum.M_CONTRAST) * 1000))/1000.0;
-        setProperty(michelsonContrast, string, MetricEnum.EDGE_STRENGTH);
+        setProperty(michelsonContrast, string, MetricEnum.M_CONTRAST);
     }
 
     public void setEdgeStrength(double laplace) {

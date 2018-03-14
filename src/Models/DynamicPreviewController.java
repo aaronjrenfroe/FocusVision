@@ -73,7 +73,7 @@ public class DynamicPreviewController extends AbstractViewController {
     // capture image
     public void captureImagePressed(){
         System.out.println("RequestToCaptureImage");
-        Stage newWindow = WindowFactory.createStaticWindow(this, VideoCap.getInstance().getOneFrame(), "Caputre " + (ViewManager.getManager().getTotalViewsCreated()+1));
+        Stage newWindow = WindowFactory.createStaticWindow(this, VideoCap.getInstance().getOneFrame(), "Caputre " + (ViewManager.getManager().getTotalViewsCreated()+1), patientName.get(), selectionInfo);
         newWindow.show();
         recaptureButtonDisabledProperty.setValue(false);
 

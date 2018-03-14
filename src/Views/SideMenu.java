@@ -61,6 +61,7 @@ public class SideMenu extends BorderPane {
         textFieldLocation.setMaxWidth(GlobalSettings.MENU_WIDTH-20);
         textFieldLocation.setText(controller.getSaveLocation());
 
+        //textFieldName.textProperty().bind(controller.getPatientNameProperty());
 
         textFieldName.setOnKeyReleased(e -> {
             controller.setPatientName(textFieldName.getText());

@@ -74,16 +74,21 @@ public abstract class AbstractViewController implements MatProvider{
             extension = filePath.substring(i+1);
         }
 
+        double selectInfo[] = ImageHelper.parseSelectionFromName(file.getName());
+
         if (extension.compareTo("png") == 0){
             Mat mat = ImageHelper.openImage(file);
-           Stage stage = WindowFactory.createStaticWindow(this, mat, file.getAbsolutePath());
+           Stage stage = WindowFactory.createStaticWindow(this, mat, file.getAbsolutePath(), file.getName(), selectInfo);
            stage.show();
         }
+
     }
 
     public String getPatientName() {
         return patientName.get();
     }
+
+    public SimpleStringProperty getPatientNameProperty() {return patientName;}
 
     public SimpleStringProperty patientNameProperty() {
         return patientName;
