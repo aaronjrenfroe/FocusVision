@@ -19,50 +19,53 @@ public class MetricsCalculator {
                 int centerY = boxBounds[1];
                 int radius = boxBounds[2];
 
-                Mat mat2 = mat.submat(centerY - radius, centerY + radius, centerX - radius, centerX + radius);
+                Mat submat = mat.submat(centerY - radius, centerY + radius, centerX - radius, centerX + radius);
 
-
-                Mat matGray = new Mat();
-                Imgproc.cvtColor(mat2, matGray, Imgproc.COLOR_BGR2GRAY);
-
-                // Adding Blur to reduce noise
-                // dest, src, kernel size,
-                //Imgproc.GaussianBlur(mat2, mat2, new Size(3,3), 0);
-                Imgproc.medianBlur(mat2, mat2, 3);
-                Mat laplaceMat = new Mat();
-
-                // mat2 is the source to be filtered by laplace, laplaceMat is the destination
-                // depth represents the number of colors in the image: RGB so 3
-                // can also include kernel for Sobal filter https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/laplace_operator/laplace_operator.html
-                Imgproc.Laplacian(mat2, laplaceMat, 3);
-
-                // These are essentially 1x1 Mats that will contain their respective information
-                MatOfDouble mean = new MatOfDouble();
-                MatOfDouble standardDev = new MatOfDouble();
-
-                // Given a Mat, this calculates the ?mean? and Standard Deviation and sets the mean and standardDev variables
-                // i'm not sure what this mean as at it can be negative between -1 and 1
-                Core.meanStdDev(laplaceMat, mean, standardDev);
+                Imgproc.cvtColor(submat, submat, Imgproc.COLOR_BGR2GRAY);
 
                 // this mean2 is the brightness metric
-                Scalar mean2 = Core.mean(matGray);
+                Scalar mean2 = Core.mean(submat);
 
-                // Laplace
-                double laplaceBasedEdgeStrengthMetric = Math.pow(standardDev.get(0, 0)[0], 2);
-
-
-                Core.MinMaxLocResult minMax =  Core.minMaxLoc(matGray);
+                Core.MinMaxLocResult minMax =  Core.minMaxLoc(submat);
                 double mContrast = (minMax.maxVal - minMax.minVal) / (minMax.maxVal + minMax.minVal);
 
                 metrics.setContrast(mContrast);
-                metrics.setEdgeStrength(laplaceBasedEdgeStrengthMetric);
-                metrics.setBrightness((mean2.val[0] / 255.0) * 100);
-                metrics.setStandardDeviation(standardDev.get(0, 0)[0]);
 
+                metrics.setBrightness((mean2.val[0] / 255.0) * 100);
+                calcLaplaceVarAndStd(submat,metrics);
 
             }catch(Exception af){
                 System.out.println(af.getLocalizedMessage());
             }
+    }
+
+    //
+    private static void calcLaplaceVarAndStd(Mat submat, Metrics metrics){
+        // Adding Blur to reduce noise
+        // dest, src, kernel size,
+        //Imgproc.GaussianBlur(submat, submat, new Size(3,3), 0);
+        Imgproc.medianBlur(submat, submat, 3);
+        Mat laplaceMat = new Mat();
+
+        // submat is the source to be filtered by laplace, laplaceMat is the destination
+        // depth represents the number of colors in the image: RGB so 3
+        // can also include kernel for Sobal filter https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/laplace_operator/laplace_operator.html
+        Imgproc.Laplacian(submat, laplaceMat, 3);
+
+        // These are essentially 1x1 Mats that will contain their respective information
+        MatOfDouble mean = new MatOfDouble();
+        MatOfDouble standardDev = new MatOfDouble();
+
+        // Given a Mat, this calculates the mean? and Standard Deviation and sets the mean and standardDev variables
+        // i'm not sure what this mean as at it can be negative between -1 and 1
+        Core.meanStdDev(laplaceMat, mean, standardDev);
+
+        // Laplace
+        double laplaceBasedEdgeStrengthMetric = Math.pow(standardDev.get(0, 0)[0], 2);
+
+        metrics.setStandardDeviation(standardDev.get(0, 0)[0]);
+        metrics.setEdgeStrength(laplaceBasedEdgeStrengthMetric);
+
     }
 
     private  static int[] getBoxBounds(double xPercent, double yPercent, double radiusPercent, int width, int height){
