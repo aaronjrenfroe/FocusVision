@@ -7,8 +7,10 @@ import Models.StaticViewController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -26,6 +28,7 @@ public class SideMenu extends BorderPane {
     TextField textFieldLocation;
     AbstractViewController controller;
 
+
     public SideMenu(int width, boolean isLiveWindow, AbstractViewController controller) {
         super();
 
@@ -38,14 +41,35 @@ public class SideMenu extends BorderPane {
         setMinWidth(width);
 
         setStyle("-fx-background-color: #336699;");
+
+        Label boxSizeLabel = new Label("Box Size: ");
+        boxSizeLabel.setTextFill(Color.WHITE);
+
+        Spinner<Integer> boxSizeSpinner;
+        boxSizeSpinner = new Spinner(10, 100, GlobalSettings.INITIAL_BOX_SIZE);
+        boxSizeSpinner.setEditable(true);
+
+        boxSizeSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
+            controller.setBoxSize(newValue);
+        });
+        boxSizeSpinner.setPrefWidth(75);
+        HBox boxSizeItems = new HBox();
+        boxSizeItems.getChildren().addAll(boxSizeLabel,boxSizeSpinner);
+        boxSizeItems.setAlignment(Pos.CENTER);
+        boxSizeItems.setSpacing(10);
+
         if (isLiveWindow)
         {
             //change what side layout loaded
-            setTop(new SideMenuButtons((DynamicPreviewController) controller));
+            SideMenuButtons top = new SideMenuButtons((DynamicPreviewController) controller);
+            top.getChildren().add(boxSizeItems);
+            setTop(top);
         }
         else
         {
-            setTop(new SideMenuButtonsStatic((StaticViewController) controller));
+            SideMenuButtonsStatic top = new SideMenuButtonsStatic((StaticViewController) controller);
+            top.getChildren().add(boxSizeItems);
+            setTop(top);
         }
         //setTop(new SideMenuButtons());
 

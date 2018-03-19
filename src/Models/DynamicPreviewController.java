@@ -5,7 +5,10 @@ import Processing.Mat2Image;
 import Helpers.MetricsCalculator;
 import Processing.VideoCap;
 
+import Views.BasicLayout;
+import Views.PreviewPane;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -25,16 +28,31 @@ public class DynamicPreviewController extends AbstractViewController {
     private Timer timer;
     VideoCap cap;
     SimpleBooleanProperty recaptureButtonDisabledProperty;
+    private SimpleStringProperty captureButtonText;
+
+    boolean hasStartedCapturing = false;
+
+    public String getCaptureButtonText() {
+        return captureButtonText.get();
+    }
+
+    public SimpleStringProperty captureButtonTextProperty() {
+        return captureButtonText;
+    }
+
 
 
     public DynamicPreviewController(Stage stage) {
         super("FocusVision", stage);
+        captureButtonText = new SimpleStringProperty("Open Camera");
         ViewManager.getManager().setPrimaryController(this);
 
         recaptureButtonDisabledProperty = new SimpleBooleanProperty();
         recaptureButtonDisabledProperty.set(true);
         cap = VideoCap.getInstance();
-        startCameraInit();
+
+        //startCameraInit();
+
 
     }
 
@@ -73,10 +91,18 @@ public class DynamicPreviewController extends AbstractViewController {
 
     // capture image
     public void captureImagePressed(){
-        System.out.println("RequestToCaptureImage");
-        Stage newWindow = WindowFactory.createStaticWindow(this, VideoCap.getInstance().getOneFrame(), "Caputre " + (ViewManager.getManager().getTotalViewsCreated()+1), patientName.get(), selectionInfo);
-        newWindow.show();
-        recaptureButtonDisabledProperty.setValue(false);
+        if(hasStartedCapturing) {
+
+            System.out.println("RequestToCaptureImage");
+            Stage newWindow = WindowFactory.createStaticWindow(this, VideoCap.getInstance().getOneFrame(), "Capture " + (ViewManager.getManager().getTotalViewsCreated() + 1), patientName.get(), selectionInfo);
+            newWindow.show();
+            recaptureButtonDisabledProperty.setValue(false);
+        }else{
+
+            startCameraInit();
+            hasStartedCapturing = true;
+            captureButtonText.set("Capture");
+        }
 
     }
 
@@ -110,9 +136,12 @@ public class DynamicPreviewController extends AbstractViewController {
     }
 
     public void killTimer(){
-        this.timer.cancel();
-        this.timer.purge();
+        if(this.timer != null) {
+            this.timer.cancel();
+            this.timer.purge();
+        }
         System.out.println("Controller Finalised");
+
     }
 
     public void updateWidth(double width){

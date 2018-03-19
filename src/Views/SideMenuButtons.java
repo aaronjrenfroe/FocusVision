@@ -4,6 +4,8 @@ import Models.DynamicPreviewController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.layout.VBox;
 
 /**
@@ -18,9 +20,9 @@ public class SideMenuButtons extends VBox {
 
         this.controller = controller;
         newButton = new Button();
-        newButton.setText("Capture");
-        newButton.setMaxWidth(90);
-        newButton.setMinWidth(90);
+
+        newButton.textProperty().bind(controller.captureButtonTextProperty());
+
 
         newButton.setOnAction(e ->
         {
@@ -39,6 +41,8 @@ public class SideMenuButtons extends VBox {
             controller.reCaptureImagePressed();
         });
         retakeButton.disableProperty().bind(controller.getRecaptureButtonDisabledProperty());
+
+
 
         this.getChildren().addAll(newButton, retakeButton);
         this.setSpacing(10);

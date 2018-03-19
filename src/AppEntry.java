@@ -3,6 +3,7 @@
  * for Capstone
  */
 
+import Models.DynamicPreviewController;
 import Models.ViewManager;
 import Models.WindowFactory;
 import Views.BasicLayout;

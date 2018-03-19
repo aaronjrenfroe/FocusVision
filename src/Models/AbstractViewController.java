@@ -1,15 +1,12 @@
 package Models;
 import Helpers.GlobalSettings;
 import Helpers.ImageHelper;
-import Helpers.MetricsCalculator;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import org.opencv.core.Mat;
 
 import java.io.File;
@@ -25,6 +22,7 @@ public abstract class AbstractViewController implements MatProvider{
     SimpleStringProperty patientName;
     SimpleStringProperty saveLocation;
     SimpleIntegerProperty boxSize;
+    double[] currentBoxPosition;
     double[] selectionInfo;
 
     Metrics metrics;
@@ -45,11 +43,12 @@ public abstract class AbstractViewController implements MatProvider{
         patientName = new SimpleStringProperty();
         saveLocation = new SimpleStringProperty();
         boxSize = new SimpleIntegerProperty();
-        boxSize.set(50);
+        boxSize.set(GlobalSettings.INITIAL_BOX_SIZE);
         patientName.set("untitled");
         saveLocation.set(getDefaultSaveLocation() + "/Desktop/FocusVision/Images/");
         File file = new File(saveLocation.getValue());
         file.mkdirs();
+        currentBoxPosition = new double[2];
 
     }
 
@@ -123,26 +122,30 @@ public abstract class AbstractViewController implements MatProvider{
         if (newSize > 10 && newSize < 120) {
             boxSize.set(newSize);
         }
+        requestToMoveBox(currentBoxPosition[0], currentBoxPosition[1]);
     }
 
     public void setImageView(ImageView imageView){
         this.imageView = imageView;
     }
 
-
     public double[] requestToMoveBox(double x, double y){
-
+        // x and y coordinates of location clicked within image
         System.out.println("x: " + x + " y: " + y);
+        currentBoxPosition[0] = x;
+        currentBoxPosition[1] = y;
 
         Bounds bounds = imageView.boundsInParentProperty().getValue();
 
-        double xReq = bounds.getMinX() + x - GlobalSettings.HALF_SIDE;
-        double yReq =  bounds.getMinY() + y - GlobalSettings.HALF_SIDE;
-        double xPos = Math.min(xReq, GlobalSettings.PreviewAreaWidth - GlobalSettings.MENU_WIDTH - 2* GlobalSettings.HALF_SIDE - 1);
+        double xReq = bounds.getMinX() + x - halfBoxSize();
+        double yReq =  bounds.getMinY() + y - halfBoxSize();
 
+
+        double xPos = Math.min(xReq, GlobalSettings.PreviewAreaWidth - GlobalSettings.MENU_WIDTH - (boxSize.get()) - 1);
         xPos = Math.max(xPos, bounds.getMinX());
 
-        double yPos = Math.min(yReq, bounds.getHeight() + bounds.getMinY() - 2* GlobalSettings.HALF_SIDE - 1);
+
+        double yPos = Math.min(yReq, bounds.getHeight() + bounds.getMinY() - (boxSize.get()) - 1);
         yPos = Math.max(yPos, bounds.getMinY());
 
         updateVidCapMetricBox(x,y);
@@ -154,7 +157,7 @@ public abstract class AbstractViewController implements MatProvider{
     protected void updateVidCapMetricBox(double centerX, double centerY){
 
         Bounds localBounds = imageView.boundsInLocalProperty().getValue();
-        double radiusWithRespectToWidth = GlobalSettings.HALF_SIDE / localBounds.getWidth();
+        double radiusWithRespectToWidth = halfBoxSize() / localBounds.getWidth();
 
         //TODO:  check edge cases literally
         double percentX = centerX/localBounds.getWidth();
@@ -163,12 +166,12 @@ public abstract class AbstractViewController implements MatProvider{
         percentX = Math.min(percentX, 1-(radiusWithRespectToWidth));
         percentX = Math.max(percentX, radiusWithRespectToWidth);
 
-        percentY = Math.min(percentY, 1-(GlobalSettings.HALF_SIDE / localBounds.getHeight()));
-        percentY = Math.max(percentY, GlobalSettings.HALF_SIDE / localBounds.getHeight());
+        percentY = Math.min(percentY, 1-(halfBoxSize() / localBounds.getHeight()));
+        percentY = Math.max(percentY, boxSize.get() / localBounds.getHeight());
 
         System.out.println(percentX + " by " + percentY);
         updateSelection(percentX, percentY, radiusWithRespectToWidth);
-        //MetricsCalculator.getVarianceOfLaplacian(this.mat, percentX,percentY, radiusWithRespectToWidth , metrics);
+
 
     }
 
@@ -194,6 +197,10 @@ public abstract class AbstractViewController implements MatProvider{
     protected void notifyBoxMoved(){
         // this gits called when box gets moved and this method gets implemented in StaticViewController
         // It is Empty here on purpose.
+    }
+
+    private double halfBoxSize(){
+        return boxSize.get()/2.0;
     }
 
     public void translatePressed(int direction)

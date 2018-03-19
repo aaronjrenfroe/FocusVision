@@ -11,6 +11,7 @@ import org.opencv.imgproc.Imgproc;
  */
 public class MetricsCalculator {
 
+    private static final int MEDIAN_BLUR_RADIUS = 3;
 
     public static void getVarianceOfLaplacian(Mat mat, double percentX, double percentY, double radiusPercent , Metrics metrics){
 
@@ -21,14 +22,15 @@ public class MetricsCalculator {
                 int radius = boxBounds[2];
 
                 Mat submat = mat.submat(centerY - radius, centerY + radius, centerX - radius, centerX + radius);
-                Imgproc.medianBlur(submat, submat, 3);
+                Imgproc.medianBlur(submat, submat, MEDIAN_BLUR_RADIUS);
 
                 Imgproc.cvtColor(submat, submat, Imgproc.COLOR_BGR2GRAY);
 
                 // this mean2 is the brightness metric
 
 
-                calcLaplaceVarAndStd(submat,metrics);
+                calcLaplaceVar(submat,metrics);
+                calcSTD(submat, metrics);
                 calculateBrightness(submat,metrics);
                 calculateContrast(submat,metrics);
 
@@ -39,7 +41,7 @@ public class MetricsCalculator {
 
 
     //
-    private static void calcLaplaceVarAndStd(Mat mat, Metrics metrics){
+    private static void calcLaplaceVar(Mat mat, Metrics metrics){
         // Adding Blur to reduce noise
         // dest, src, kernel size,
 
@@ -62,9 +64,16 @@ public class MetricsCalculator {
         // Variance of Laplace Transformation
         double laplaceBasedEdgeStrengthMetric = Math.pow(standardDevd, 2);
 
-        metrics.setStandardDeviation(standardDevd);
         metrics.setEdgeStrength(laplaceBasedEdgeStrengthMetric);
 
+    }
+
+    private static void calcSTD(Mat mat, Metrics metrics){
+        MatOfDouble mean = new MatOfDouble();
+        MatOfDouble standardDev = new MatOfDouble();
+        Core.meanStdDev(mat, mean, standardDev);
+        double standardDevd = standardDev.get(0, 0)[0];
+        metrics.setStandardDeviation(standardDevd);
     }
 
     private static void calculateBrightness(Mat mat, Metrics metrics){
