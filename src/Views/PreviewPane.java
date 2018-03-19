@@ -1,8 +1,6 @@
 package Views;
 
-import Helpers.GlobalSettings;
 import Models.AbstractViewController;
-import Models.Metrics;
 import Processing.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Pos;
@@ -93,30 +91,31 @@ public class PreviewPane extends AnchorPane {
         preview.setOnMouseDragged(e -> {
             requestToMoveBox( e.getX(),  e.getY());
         });
-        setLayout();
+        layoutMetrics();
     }
 
-    private void setLayout(){
+    private void layoutMetrics(){
         GridPane bottomMetrics = new GridPane();
 
-        HBox hbox = new HBox();
-        hbox.setSpacing(10);
-
-        hbox.setStyle("-fx-background-color: #FFFFFF;");
-
         SimpleStringProperty[] metricProperties = controller.getMetrics().getProperties();
-        // TODO: REFACOTOR SO we LIMIT the NUMBER OF ITEMS IN VBOX
+
         for (int i = 0; i < metricProperties.length; i++) {
             // Top Label
             Label metricLabel = new Label();
             metricLabel.textProperty().bind(metricProperties[i]);
+            // Starts from bottom to top, left to right,
+            // 3, 4, 5
+            // 0, 1, 2
             bottomMetrics.add(metricLabel,i%3, (metricProperties.length/3) - (i/3));
 
-            //bottomMetrics
-            System.out.println("Adding to position " + i%3 + " x " + i/3);
         }
+
+
         bottomMetrics.setStyle("-fx-background-color: #FFFFFF;");
         bottomMetrics.setAlignment(Pos.BOTTOM_LEFT);
+
+        // This needs to be beautified
+        // Makes the Columns equal spaced
         ColumnConstraints cc = new ColumnConstraints();
         cc.setPercentWidth(33);
         ColumnConstraints cc1 = new ColumnConstraints();
@@ -127,30 +126,8 @@ public class PreviewPane extends AnchorPane {
         bottomMetrics.getColumnConstraints().add(cc1);
         bottomMetrics.getColumnConstraints().add(cc2);
 
-
+        // add metrics to pane
         pane1.setBottom(bottomMetrics);
-
-//        for (int i = 0; i < metricProperties.length; i+=2) {
-//
-//            VBox vbox = new VBox();
-//            vbox.setStyle("-fx-background-color: #FFFFFF;");
-//
-//            // Top Label
-//            Label metricLabel = new Label();
-//            metricLabel.textProperty().bind(metricProperties[i]);
-//            vbox.getChildren().add(metricLabel);
-//
-//            // Bottom Label
-//            if(i + 1 <= metricProperties.length) {
-//                Label metricLabel2 = new Label();
-//                metricLabel2.textProperty().bind(metricProperties[i + 1]);
-//                vbox.getChildren().add(metricLabel2);
-//            }
-//
-//            hbox.getChildren().add(vbox);
-//        }
-//
-//        pane1.setBottom(hbox);
 
     }
 
@@ -165,7 +142,5 @@ public class PreviewPane extends AnchorPane {
         square.setX(x);
         square.setY(y);
     }
-
-
 
 }
