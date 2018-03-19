@@ -75,7 +75,7 @@ public class DynamicPreviewController extends AbstractViewController {
 
 
     private TimerTask getFrameUpdater(Metrics metrics){
-        Mat2Image mat2Img = new Mat2Image();
+
         return new TimerTask(){
             @Override
             public void run() {
@@ -83,7 +83,7 @@ public class DynamicPreviewController extends AbstractViewController {
                 if(selectionInfo != null) {
                     MetricsCalculator.getVarianceOfLaplacian(mat, selectionInfo[0], selectionInfo[1], selectionInfo[2], metrics);
                 }
-                Image image = SwingFXUtils.toFXImage(mat2Img.getImage(cap.getOneFrame()), null);
+                Image image = Mat2Image.getImage2(cap.getOneFrame());
                 imageView.setImage(image);
             }
         };
@@ -108,7 +108,7 @@ public class DynamicPreviewController extends AbstractViewController {
 
     // recapture Image
     public void reCaptureImagePressed(){
-        System.out.println("Should Replace Image in last Opened Window");
+
         StaticViewController staticController = ViewManager.getManager().getLast();
         if(staticController != null){
             staticController.setMat(VideoCap.getInstance().getOneFrame());
@@ -116,11 +116,16 @@ public class DynamicPreviewController extends AbstractViewController {
     }
 
     public void changeCameraPressed(){
-        timer.cancel();
-        timer.purge();
-        VideoCap.getInstance().nextCamera();
-        timer = new Timer();
-        timer.scheduleAtFixedRate(getFrameUpdater(metrics), 0, 33);
+        killTimer();
+        try{
+            Thread.sleep(200);
+            VideoCap.getInstance().nextCamera();
+            timer = new Timer();
+            timer.scheduleAtFixedRate(getFrameUpdater(metrics), 0, 33);
+        }catch (Exception e){
+            System.out.println("Could Not Sleep:" + e.getLocalizedMessage());
+        }
+
     }
 
     public void recountCameraPressed(){

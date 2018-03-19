@@ -21,6 +21,9 @@ public class MetricsCalculator {
                 int centerY = boxBounds[1];
                 int radius = boxBounds[2];
 
+                System.out.println("Native Box Width " + radius * 2);
+                System.out.println("Native Mat res: " +mat.width() + " x " + mat.height());
+
                 Mat submat = mat.submat(centerY - radius, centerY + radius, centerX - radius, centerX + radius);
                 Imgproc.medianBlur(submat, submat, MEDIAN_BLUR_RADIUS);
 

@@ -62,23 +62,32 @@ public class VideoCap {
 
     }
 
-    public void countCameras(){
+    public int countCameras(){
 
-        cameraCount = -1;
-        VideoCapture tempCap = new VideoCapture();
-        do {
-            cameraCount++;
-
-            tempCap.open(cameraCount);
-
-        }while (tempCap.isOpened());
+        cameraCount = 0;
+        while(true){
+            VideoCapture cap = new VideoCapture();
+            cap.open(cameraCount);
+            if(!cap.isOpened()){
+                break;
+            }else{
+                cameraCount ++;
+                cap.release();
+            }
+        }
+        return cameraCount;
     }
 
     public void nextCamera(){
-        if(cameraCount > 1 || currentCamera == -1) {
+
+        if(cameraCount > 0) {
             currentCamera = ++currentCamera % cameraCount;
-            cap.open(0);
+            System.out.println("Opened Camera: " + currentCamera);
+            cap.release();
+            cap.open(currentCamera);
+
         }
+
     }
 
     public static VideoCap getInstance(){
@@ -93,7 +102,7 @@ public class VideoCap {
     }
 
     public Mat getOneFrame() {
-        BufferedImage nativeImage =  getNativeImage();
+
         System.gc();
         cap.read(mat2Img.mat);
         if (mat2Img.mat.empty()){
@@ -113,17 +122,6 @@ public class VideoCap {
         }
     }
 
-
-    public BufferedImage getNativeImage(){
-        cap.read(mat2Img.mat);
-        if (mat2Img.mat.empty()){
-            System.out.println("Null");
-            return null;
-        }else {
-
-            return mat2Img.getImage(mat2Img.mat);
-        }
-    }
 
     /*
     protected void saveImage(String fileName){

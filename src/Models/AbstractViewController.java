@@ -59,8 +59,6 @@ public abstract class AbstractViewController implements MatProvider{
     // open Image
     public void openImagePressed(){
 
-        System.out.println("Should present User with UI to select file and open Image");
-        System.out.println("Should Open Image");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         File file = fileChooser.showOpenDialog(stage);
@@ -73,9 +71,9 @@ public abstract class AbstractViewController implements MatProvider{
             extension = filePath.substring(i+1);
         }
 
-        double selectInfo[] = ImageHelper.parseSelectionFromName(file.getName());
-
         if (extension.contains("png") || extension.contains("tiff") || extension.contains("tif") || extension.contains("jpg") || extension.contains("jpeg")){
+
+            double selectInfo[] = ImageHelper.parseSelectionFromName(file.getName());
 
             Mat mat = ImageHelper.openImage(file);
             Stage stage = WindowFactory.createStaticWindow(this, mat, file.getAbsolutePath(), file.getName(), selectInfo);

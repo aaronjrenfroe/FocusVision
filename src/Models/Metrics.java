@@ -61,28 +61,28 @@ public class Metrics {
     public void setContrast(double michelsonContrast) {
 
         updateBuffer(michelsonContrast, MetricEnum.M_CONTRAST);
-        String string = CONTRAST_LABEL + ((int)(getMeanFor(MetricEnum.M_CONTRAST) * 1000))/1000.0;
+        String string = CONTRAST_LABEL + getFormatedMetric(MetricEnum.M_CONTRAST);
         setProperty(string, MetricEnum.M_CONTRAST);
     }
 
     public void setEdgeStrength(double laplace) {
 
         updateBuffer(laplace, MetricEnum.EDGE_STRENGTH);
-        String string = EDGE_STRENGTH_LABEL + (int) Math.round(getMeanFor(MetricEnum.EDGE_STRENGTH));
+        String string = EDGE_STRENGTH_LABEL + getFormatedMetric(MetricEnum.EDGE_STRENGTH);
         setProperty(string, MetricEnum.EDGE_STRENGTH);
     }
 
     public void setBrightness(double brightness) {
 
         updateBuffer(brightness, MetricEnum.BRIGHTNESS);
-        String string = BRIGHTNESS_LABEL + ((int)(getMeanFor(MetricEnum.M_CONTRAST) * 1000))/1000.0 + "%";
+        String string = BRIGHTNESS_LABEL + getFormatedMetric(MetricEnum.BRIGHTNESS) + "%";
         setProperty(string, MetricEnum.BRIGHTNESS);
     }
 
     public void setStandardDeviation(double stdDev) {
 
         updateBuffer(stdDev, MetricEnum.STANDARD_DEVIATION);
-        String string = STANDARD_DEVIATION_LABEL+ ((int) Math.round((getMeanFor(MetricEnum.STANDARD_DEVIATION) * 1000)) / 1000.0) ;
+        String string = STANDARD_DEVIATION_LABEL+ getFormatedMetric(MetricEnum.STANDARD_DEVIATION);
         setProperty(string, MetricEnum.STANDARD_DEVIATION);
     }
 
@@ -110,7 +110,13 @@ public class Metrics {
         return sum/array.length;
     }
 
+    private String formatDecimals(double d){
+        return String.format("%.2f", d);
+    }
 
+    private String getFormatedMetric(MetricEnum property){
+        return formatDecimals(getValueFor(property));
+    }
     public SimpleStringProperty[] getProperties() {
         return properties;
     }
