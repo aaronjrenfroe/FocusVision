@@ -36,13 +36,13 @@ public class StaticViewController extends AbstractViewController {
     @Override
     public void setImageView(ImageView imageView){
         this.imageView = imageView;
-        this.imageView.setImage(SwingFXUtils.toFXImage(ImageHelper.getBufferedImageFromMat(this.mat), null));
+        this.imageView.setImage(ImageHelper.getBufferedImageFromMat(this.mat));
 
     }
 
     public void setMat(Mat mat){
         this.mat = mat;
-        this.imageView.setImage(SwingFXUtils.toFXImage(ImageHelper.getBufferedImageFromMat(this.mat), null));
+        this.imageView.setImage(ImageHelper.getBufferedImageFromMat(this.mat));
         updateMetrics();
     }
 

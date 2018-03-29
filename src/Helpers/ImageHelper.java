@@ -1,6 +1,7 @@
 package Helpers;
 
 import Processing.Mat2Image;
+import javafx.scene.image.Image;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -21,7 +22,7 @@ public class ImageHelper {
     {
         //save image function
 
-        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2BGR);
+        //Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2BGR);
         Imgcodecs.imwrite(fileName, mat);
 
     }
@@ -41,16 +42,9 @@ public class ImageHelper {
         System.out.println("Should get image Metadata");
     }
 
-    public static BufferedImage getBufferedImageFromMat(Mat mat){
-        Mat2Image mat2Img = new Mat2Image();
-        return mat2Img.getImage(mat);
-    }
+    public static Image getBufferedImageFromMat(Mat mat){
 
-    public Mat bufferedImageToMat(BufferedImage bImage){
-        Mat mat = new Mat();
-        mat.put(bImage.getWidth(), bImage.getHeight(), ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData());
-        return mat;
-
+        return Mat2Image.getImage2(mat);
     }
 
     public static double[] parseSelectionFromName(String filename){
