@@ -39,7 +39,7 @@ public class SideMenuBottomZoom extends HBox
 
         zoomIn.setOnAction(e ->
         {
-            controller.zoomInPressed();
+            controller.zoomPressed(1);
         });
 
         percentage = new Label();
@@ -53,7 +53,7 @@ public class SideMenuBottomZoom extends HBox
 
         zoomOut.setOnAction(e ->
         {
-            controller.zoomOutPressed();
+            controller.zoomPressed(-1);
         });
 
         arrows = new ScrollButtons(controller);
@@ -63,6 +63,6 @@ public class SideMenuBottomZoom extends HBox
         setAlignment(Pos.BASELINE_CENTER);
 
         getChildren().addAll(zoomOut, percentage, zoomIn, arrows);
-        this.layout();
+
     }
 }

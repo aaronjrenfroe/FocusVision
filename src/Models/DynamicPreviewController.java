@@ -10,6 +10,8 @@ import Views.PreviewPane;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.opencv.core.Mat;
@@ -32,6 +34,8 @@ public class DynamicPreviewController extends AbstractViewController {
 
     boolean hasStartedCapturing = false;
 
+    private int zoomLevel = 0;
+
     public String getCaptureButtonText() {
         return captureButtonText.get();
     }
@@ -49,14 +53,11 @@ public class DynamicPreviewController extends AbstractViewController {
 
         recaptureButtonDisabledProperty = new SimpleBooleanProperty();
         recaptureButtonDisabledProperty.set(true);
-        cap = VideoCap.getInstance();
-
-        //startCameraInit();
-
-
+        
     }
 
     private void startCameraInit(){
+        cap = VideoCap.getInstance();
         // This is on a delay because on initialization
         // the pane doesn't have a size
         this.timer = new Timer();
@@ -80,11 +81,11 @@ public class DynamicPreviewController extends AbstractViewController {
             @Override
             public void run() {
                 Mat mat = cap.getOneFrame();
+                imageView.setImage(Mat2Image.getImage2(mat));
+
                 if(selectionInfo != null) {
                     MetricsCalculator.getVarianceOfLaplacian(mat, selectionInfo[0], selectionInfo[1], selectionInfo[2], metrics);
                 }
-                Image image = Mat2Image.getImage2(cap.getOneFrame());
-                imageView.setImage(image);
             }
         };
     }
@@ -116,13 +117,17 @@ public class DynamicPreviewController extends AbstractViewController {
     }
 
     public void changeCameraPressed(){
+        // Kills the thread that refreshes the image shown.
         killTimer();
+
+        // There was an issue getting the VidCap Instance
+        // and resetting the timer right away and this fixed it
         try{
             Thread.sleep(200);
             VideoCap.getInstance().nextCamera();
             timer = new Timer();
             timer.scheduleAtFixedRate(getFrameUpdater(metrics), 0, 33);
-        }catch (Exception e){
+        }catch (InterruptedException e){ // Thrown by Thread.sleep
             System.out.println("Could Not Sleep:" + e.getLocalizedMessage());
         }
 
@@ -147,6 +152,27 @@ public class DynamicPreviewController extends AbstractViewController {
         }
         System.out.println("Controller Finalised");
 
+    }
+    @Override
+    public void zoomPressed(int value){
+        zoomLevel +=(value * 10);
+
+        if (zoomLevel < 0){
+            zoomLevel = 0;
+        }
+
+        if(value > 0){
+            System.out.print("Zoom in: ");
+        }
+        else if(value < 0){
+            System.out.print("Zoom out: ");
+        }
+        System.out.println(zoomLevel);
+    }
+
+    @Override
+    void shift(Point2D delta){
+        System.out.println("");
     }
 
     public void updateWidth(double width){

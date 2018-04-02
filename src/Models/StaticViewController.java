@@ -3,6 +3,7 @@ package Models;
 import Helpers.ImageHelper;
 import Helpers.MetricsCalculator;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
@@ -25,7 +26,7 @@ import java.util.Random;
 
 public class StaticViewController extends AbstractViewController {
     // pass it a Mat or pass it a png
-    Random rand = new Random();
+
     Mat mat;
 
     public StaticViewController(Mat image, Stage stage){
@@ -50,6 +51,16 @@ public class StaticViewController extends AbstractViewController {
     public void updateSelection(double xPercent, double yPercent, double radiusPercent) {
         super.updateSelection(xPercent, yPercent, radiusPercent);
         updateMetrics();
+    }
+
+    @Override
+    public void zoomPressed(int value) {
+
+    }
+
+    @Override
+    void shift(Point2D delta) {
+
     }
 
     private void updateMetrics(){
@@ -104,9 +115,6 @@ public class StaticViewController extends AbstractViewController {
             ImageHelper.saveImage(outputName, this.mat);
         }
     }
-
-
-
 
 
     // Top Menu Functions

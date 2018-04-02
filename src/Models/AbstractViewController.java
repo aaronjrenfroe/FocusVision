@@ -4,6 +4,8 @@ import Helpers.ImageHelper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -28,6 +30,12 @@ public abstract class AbstractViewController implements MatProvider{
     Metrics metrics;
     Stage stage;
 
+
+
+
+    private static final int MIN_PIXELS = 10;
+
+
     public AbstractViewController(String windowName, Stage stage) {
         this.stage = stage;
         imageView = new ImageView();
@@ -50,7 +58,15 @@ public abstract class AbstractViewController implements MatProvider{
         file.mkdirs();
         currentBoxPosition = new double[2];
 
+        //
+
+
+
+
     }
+
+
+
 
     private String getDefaultSaveLocation(){
         return System.getProperty("user.home");
@@ -184,13 +200,6 @@ public abstract class AbstractViewController implements MatProvider{
     }
 
 
-    public void zoomInPressed(){
-        System.out.println("Button was clicked -- zooming In!!");
-    }
-
-    public void zoomOutPressed(){
-        System.out.println("Button was clicked -- zooming Out!!");
-    }
 
     protected void notifyBoxMoved(){
         // this gits called when box gets moved and this method gets implemented in StaticViewController
@@ -203,25 +212,53 @@ public abstract class AbstractViewController implements MatProvider{
 
     public void translatePressed(int direction)
     {
+        Point2D p = Point2D.ZERO;
+
         switch (direction)
         {
             case 1:
+                p.add(0,1);
                 System.out.println("up");
+
                 break;
             case 2:
+                p.add(1,0);
                 System.out.println("right");
                 break;
             case 3:
+                p.add(0,-1);
                 System.out.println("down");
                 break;
             case 4:
+                p.add(-1,0);
                 System.out.println("left");
                 break;
             default:
                 System.out.println("default");
                 break;
         }
+        shift(p);
     }
+
+
+
+
+    double clamp(double value, double min, double max) {
+
+        if (value < min)
+            return min;
+        if (value > max)
+            return max;
+        return value;
+    }
+
+    private void reset(double width, double height) {
+        imageView.setViewport(new Rectangle2D(0, 0, width, height));
+    }
+
+    public abstract void zoomPressed(int value);
+
+    abstract void shift(Point2D delta);
 
     public Metrics getMetrics() {
         return metrics;

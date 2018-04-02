@@ -13,7 +13,7 @@ import org.opencv.imgproc.Imgproc;
 public class Mat2Image {
 
     Mat mat = new Mat();
-    
+
     public Mat2Image() {}
 
     public static Image getImage2(Mat mat){
