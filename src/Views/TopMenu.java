@@ -72,7 +72,7 @@ public class TopMenu extends MenuBar {
 
     private void initForMainWindow(){
         Menu fileMenu = new Menu("_File");
-        MenuItem openOption = new MenuItem("Open");
+        MenuItem openOption = new MenuItem("Open Image");
 
         // we need functions that are specific to DynamicPreviewController
 
@@ -93,18 +93,15 @@ public class TopMenu extends MenuBar {
             Menu viewMenu = new Menu("_View");
             MenuItem changeCamera = new MenuItem("Change Camera");
             changeCamera.setOnAction(e -> {
+                dController.recountCameraPressed();
                 dController.changeCameraPressed();
             });
 
-            MenuItem detectCameras = new MenuItem("Detect Cameras");
-            detectCameras.setOnAction(e -> {
-                dController.recountCameraPressed();
-            });
 
-            MenuItem boxSize = new MenuItem("Change box size");
-            MenuItem hideBox = new MenuItem("Hide Box");
 
-            viewMenu.getItems().addAll(changeCamera, detectCameras, boxSize, hideBox);
+
+
+            viewMenu.getItems().addAll(changeCamera);
 
             // Help Menu
             Menu helpMenu = new Menu("_Help");

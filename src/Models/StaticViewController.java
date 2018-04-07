@@ -6,6 +6,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -37,7 +38,9 @@ public class StaticViewController extends AbstractViewController {
     @Override
     public void setImageView(ImageView imageView){
         this.imageView = imageView;
-        this.imageView.setImage(ImageHelper.getBufferedImageFromMat(this.mat));
+        if (this.mat != null) {
+            this.imageView.setImage(ImageHelper.getBufferedImageFromMat(this.mat));
+        }
 
     }
 
