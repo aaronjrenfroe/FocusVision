@@ -34,11 +34,6 @@ public class DynamicPreviewController extends AbstractViewController {
 
     boolean hasStartedCapturing = false;
 
-    private int zoomLevel = 0;
-
-    public String getCaptureButtonText() {
-        return captureButtonText.get();
-    }
 
     public SimpleStringProperty captureButtonTextProperty() {
         return captureButtonText;

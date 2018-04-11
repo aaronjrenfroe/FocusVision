@@ -12,7 +12,6 @@ import javafx.scene.layout.BorderPane;
 public class BasicLayout{
 
     private BorderPane layout;
-    AbstractViewController abstractViewModel;
 
     public BasicLayout() {
         this.layout = new BorderPane();

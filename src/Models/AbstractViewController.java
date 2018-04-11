@@ -129,6 +129,7 @@ public abstract class AbstractViewController {
         this.imageView = imageView;
     }
 
+
     public double[] requestToMoveBox(double x, double y){
         // x and y coordinates of location clicked within image
         System.out.println("x: " + x + " y: " + y);
