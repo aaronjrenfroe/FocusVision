@@ -9,6 +9,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
 import java.io.File;
@@ -262,6 +263,10 @@ public abstract class AbstractViewController implements MatProvider{
 
     public Metrics getMetrics() {
         return metrics;
+    }
+
+    static{
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
 }
