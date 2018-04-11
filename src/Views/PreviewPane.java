@@ -45,7 +45,7 @@ public class PreviewPane extends AnchorPane {
         preview.setStyle("-fx-background-color: #336699;");
         preview.setPreserveRatio(true);
 
-        setStyle("-fx-background-color: #606360;");
+        setStyle("-fx-background-color: #000000;");
         previewController = new PreviewController();
         pane1= new BorderPane();
         pane1.setMaxWidth(width);
@@ -71,7 +71,7 @@ public class PreviewPane extends AnchorPane {
         square.widthProperty().bind(controller.boxSizeProperty());
 
         square.setFill(Color.color(0,0,0,0));
-        square.setStroke(Color.RED);
+        square.setStroke(Color.color(14/255.0, 250/255.0, 250/255.0));
         getChildren().add(square);
         square.setVisible(false);
         square.setMouseTransparent(true);

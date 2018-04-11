@@ -3,7 +3,9 @@ package Models;
 /**
  * Created by AaronR on 3/8/18.
  * for Senior Capstone 2018
+ *
  */
+// USED in Metrics.class
 public enum MetricEnum {
 
     EDGE_STRENGTH (0),

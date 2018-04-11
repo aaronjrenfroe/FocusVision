@@ -2,28 +2,23 @@ package Models;
 
 import Helpers.ImageHelper;
 import Helpers.MetricsCalculator;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.File;
-import java.util.Random;
 
 
 /**
  * Created by AaronR on 2/25/18.
- * for ?
+ * for Software Engineering Senior Capstone 2018
  */
 
+/*
+  Controller for the static image viewer window for viewing an opened image or captured image
+*/
 public class StaticViewController extends AbstractViewController {
     // pass it a Mat or pass it a png
 
@@ -31,6 +26,7 @@ public class StaticViewController extends AbstractViewController {
 
     public StaticViewController(Mat image, Stage stage){
         super("", stage);
+        metrics = new Metrics(false);
         mat = image;
     }
 
@@ -53,18 +49,8 @@ public class StaticViewController extends AbstractViewController {
         updateMetrics();
     }
 
-    @Override
-    public void zoomPressed(int value) {
-
-    }
-
-    @Override
-    void shift(Point2D delta) {
-
-    }
-
     private void updateMetrics(){
-        MetricsCalculator.getVarianceOfLaplacian(this.mat, selectionInfo[0], selectionInfo[1], selectionInfo[2] , metrics);
+        MetricsCalculator.calculateMetrics(this.mat, selectionInfo[0], selectionInfo[1], selectionInfo[2] , metrics);
     }
 
     // save Image

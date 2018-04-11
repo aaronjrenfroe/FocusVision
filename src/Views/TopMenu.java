@@ -101,10 +101,10 @@ public class TopMenu extends MenuBar {
                 dController.recountCameraPressed();
             });
 
-            MenuItem boxSize = new MenuItem("Change box size");
+
             MenuItem hideBox = new MenuItem("Hide Box");
 
-            viewMenu.getItems().addAll(changeCamera, detectCameras, boxSize, hideBox);
+            viewMenu.getItems().addAll(changeCamera, detectCameras);
 
             // Help Menu
             Menu helpMenu = new Menu("_Help");

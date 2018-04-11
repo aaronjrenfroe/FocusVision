@@ -22,6 +22,18 @@ public class SideMenuButtons extends VBox {
         newButton = new Button();
 
         newButton.textProperty().bind(controller.captureButtonTextProperty());
+        newButton.setDisable(true);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        newButton.setDisable(false);
+
+                    }
+                },
+                1000
+        );
 
 
         newButton.setOnAction(e ->

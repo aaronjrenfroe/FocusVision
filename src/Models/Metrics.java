@@ -34,10 +34,15 @@ public class Metrics {
     private int[] bufferPositions;
     private double[][] buffers;
 
+    // Constructor
+    /*
+        Given boolean isLive Metrics is the class the manages the image metrics once a box is placed on the screen.
+        if isLive, metrics keeps a running average of the last DYNAMIC_BUFFER_SIZE results to smooth the metrics displayed on screen
+        if !isLive metrics just provides the requested metric for the given selection
+     */
     public Metrics(boolean isLive){
 
         bufferSize = isLive ? DYNAMIC_BUFFER_SIZE : STATIC_BUFFER__SIZE;
-
 
         properties = new SimpleStringProperty[NUMBER_OF_METRICS];
         buffers = new double[NUMBER_OF_METRICS][bufferSize];

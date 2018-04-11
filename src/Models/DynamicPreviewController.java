@@ -5,14 +5,9 @@ import Processing.Mat2Image;
 import Helpers.MetricsCalculator;
 import Processing.VideoCap;
 
-import Views.BasicLayout;
-import Views.PreviewPane;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.opencv.core.Mat;
 
@@ -25,9 +20,14 @@ import java.util.TimerTask;
  * for ?
  */
 
+/*
+  Controller for the viewing the live view from a camera
+*/
 public class DynamicPreviewController extends AbstractViewController {
 
+    // use to refresh frame
     private Timer timer;
+
     VideoCap cap;
     SimpleBooleanProperty recaptureButtonDisabledProperty;
     private SimpleStringProperty captureButtonText;
@@ -48,30 +48,22 @@ public class DynamicPreviewController extends AbstractViewController {
 
     public DynamicPreviewController(Stage stage) {
         super("FocusVision", stage);
+        metrics = new Metrics(true);
         captureButtonText = new SimpleStringProperty("Open Camera");
         ViewManager.getManager().setPrimaryController(this);
 
         recaptureButtonDisabledProperty = new SimpleBooleanProperty();
         recaptureButtonDisabledProperty.set(true);
-        
+
     }
 
     private void startCameraInit(){
         cap = VideoCap.getInstance();
         // This is on a delay because on initialization
         // the pane doesn't have a size
-        this.timer = new Timer();
 
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        // times are in milliseconds
-                        timer.scheduleAtFixedRate(getFrameUpdater(metrics),0,33);
-                    }
-                },
-                1000
-        );
+        this.timer = new Timer();
+        timer.scheduleAtFixedRate(getFrameUpdater(metrics),0,33);
     }
 
 
@@ -84,7 +76,7 @@ public class DynamicPreviewController extends AbstractViewController {
                 imageView.setImage(Mat2Image.getImage2(mat));
 
                 if(selectionInfo != null) {
-                    MetricsCalculator.getVarianceOfLaplacian(mat, selectionInfo[0], selectionInfo[1], selectionInfo[2], metrics);
+                    MetricsCalculator.calculateMetrics(mat, selectionInfo[0], selectionInfo[1], selectionInfo[2], metrics);
                 }
             }
         };
@@ -123,7 +115,7 @@ public class DynamicPreviewController extends AbstractViewController {
         // There was an issue getting the VidCap Instance
         // and resetting the timer right away and this fixed it
         try{
-            Thread.sleep(200);
+            Thread.sleep(300);
             VideoCap.getInstance().nextCamera();
             timer = new Timer();
             timer.scheduleAtFixedRate(getFrameUpdater(metrics), 0, 33);
@@ -153,31 +145,7 @@ public class DynamicPreviewController extends AbstractViewController {
         System.out.println("Controller Finalised");
 
     }
-    @Override
-    public void zoomPressed(int value){
-        zoomLevel +=(value * 10);
 
-        if (zoomLevel < 0){
-            zoomLevel = 0;
-        }
-
-        if(value > 0){
-            System.out.print("Zoom in: ");
-        }
-        else if(value < 0){
-            System.out.print("Zoom out: ");
-        }
-        System.out.println(zoomLevel);
-    }
-
-    @Override
-    void shift(Point2D delta){
-        System.out.println("");
-    }
-
-    public void updateWidth(double width){
-        VideoCap.getInstance().setWidth(width);
-    }
 
 
 }

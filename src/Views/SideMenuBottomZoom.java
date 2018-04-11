@@ -60,9 +60,8 @@ public class SideMenuBottomZoom extends HBox
 
         setSpacing(10);
 
-        setAlignment(Pos.BASELINE_CENTER);
-
         getChildren().addAll(zoomOut, percentage, zoomIn, arrows);
 
+        setAlignment(Pos.BASELINE_CENTER);
     }
 }

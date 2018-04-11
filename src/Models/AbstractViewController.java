@@ -14,63 +14,55 @@ import org.opencv.core.Mat;
 import java.io.File;
 
 /**
- * Created by AaronR on 2/25/18.
- * for ?
+ * Created by Aaron Renfroe on 2/25/18.
+ * for Senior Capstone 2018
+ * for Dr. Jones and Dr. Rickard
  */
-public abstract class AbstractViewController implements MatProvider{
 
-    ImageView imageView;
+/*
+AbstractViewController is and Abstract class that contains the functionality in common
+between DynamicPreviewController and StaticViewController since both windows are nearly identical
+ */
+public abstract class AbstractViewController {
+
+
     String windowName;
+
+    // Observables
     SimpleStringProperty patientName;
     SimpleStringProperty saveLocation;
     SimpleIntegerProperty boxSize;
+
     double[] currentBoxPosition;
     double[] selectionInfo;
 
-    Metrics metrics;
+    Metrics metrics; // Gets set in Child class
     Stage stage;
 
+    ImageView imageView;
 
-
-
-    private static final int MIN_PIXELS = 10;
 
 
     public AbstractViewController(String windowName, Stage stage) {
+
         this.stage = stage;
-        imageView = new ImageView();
         this.windowName = windowName;
-        System.out.println(saveLocation);
 
-        if(this.getClass() == DynamicPreviewController.class) {
-            metrics = new Metrics(true);
-        }else{
-            metrics = new Metrics(false);
-        }
+        imageView = new ImageView();
 
+        // Init and setup
         patientName = new SimpleStringProperty();
         saveLocation = new SimpleStringProperty();
         boxSize = new SimpleIntegerProperty();
         boxSize.set(GlobalSettings.INITIAL_BOX_SIZE);
         patientName.set("untitled");
-        saveLocation.set(getDefaultSaveLocation() + "/Desktop/FocusVision/Images/");
+        saveLocation.set(System.getProperty("user.home") + "/Desktop/FocusVision/Images/");
         File file = new File(saveLocation.getValue());
         file.mkdirs();
         currentBoxPosition = new double[2];
 
-        //
-
-
-
-
     }
 
-
-
-
-    private String getDefaultSaveLocation(){
-        return System.getProperty("user.home");
-    }
 
     // open Image
     public void openImagePressed(){
@@ -102,11 +94,7 @@ public abstract class AbstractViewController implements MatProvider{
         return patientName.get();
     }
 
-    public SimpleStringProperty getPatientNameProperty() {return patientName;}
 
-    public SimpleStringProperty patientNameProperty() {
-        return patientName;
-    }
 
     public void setPatientName(String patientName) {
         this.patientName.set(patientName);
@@ -116,9 +104,6 @@ public abstract class AbstractViewController implements MatProvider{
         return saveLocation.get();
     }
 
-    public SimpleStringProperty saveLocationProperty() {
-        return saveLocation;
-    }
 
     public void setSaveLocation(String saveLocation) {
         this.saveLocation.set(saveLocation);
@@ -201,65 +186,54 @@ public abstract class AbstractViewController implements MatProvider{
 
 
 
-    protected void notifyBoxMoved(){
-        // this gits called when box gets moved and this method gets implemented in StaticViewController
-        // It is Empty here on purpose.
-    }
-
     private double halfBoxSize(){
         return boxSize.get()/2.0;
     }
 
     public void translatePressed(int direction)
     {
-        Point2D p = Point2D.ZERO;
 
         switch (direction)
         {
             case 1:
-                p.add(0,1);
+
                 System.out.println("up");
 
                 break;
             case 2:
-                p.add(1,0);
+
                 System.out.println("right");
                 break;
             case 3:
-                p.add(0,-1);
+
                 System.out.println("down");
                 break;
             case 4:
-                p.add(-1,0);
+
                 System.out.println("left");
                 break;
             default:
                 System.out.println("default");
                 break;
         }
-        shift(p);
+
     }
 
+    // Needs implementation
+    // Either copy and modify the mat and reset the imageView
+    // or modify the imageView's viewport
+    // we were not familiar enough with JavaFX to figure out the best method of implementing this
+    public void zoomPressed(int value){
+        // TODO: Implement this
+        if(value  > 0){
+            System.out.println("Zoom in pressed");
+        }else if (value < 0){
+            System.out.println("Zoom out pressed");
+        }
 
-
-
-    double clamp(double value, double min, double max) {
-
-        if (value < min)
-            return min;
-        if (value > max)
-            return max;
-        return value;
     }
 
-    private void reset(double width, double height) {
-        imageView.setViewport(new Rectangle2D(0, 0, width, height));
-    }
-
-    public abstract void zoomPressed(int value);
-
-    abstract void shift(Point2D delta);
-
+    // Called by view
     public Metrics getMetrics() {
         return metrics;
     }
