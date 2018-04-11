@@ -1,15 +1,16 @@
 /**
- * Created by AaronR on 1/22/18.
- * for Capstone
+ * Created by Aaron Renfroe on 1/22/18.
+ * for Software Engineering Senior Capstone 2017-2018
+ * Team Members were Jp Syfacunda, Richard Christensen, and Aaron Renfroe
+ * If something breaks as Aaron Renfroe @ aaronjrenfroe@gmail.com
  */
 
-import Models.DynamicPreviewController;
 import Models.ViewManager;
 import Models.WindowFactory;
-import Views.BasicLayout;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+
 
 public class AppEntry extends Application{
 
@@ -31,12 +32,10 @@ public class AppEntry extends Application{
         });
 
         this.window.show();
-
     }
 
-
     private void onClose(){
-        System.out.println("Terminating FX Application");
+        // Terminating FX App
         ViewManager.getManager().getPrimaryStage().killTimer();
         window.close();
         Platform.exit();
@@ -46,7 +45,7 @@ public class AppEntry extends Application{
     @Override
     public void stop() throws Exception {
         super.stop();
-        System.out.println("Stopping JVM");
+        // Stopping JVM
         System.exit(0);
     }
 }

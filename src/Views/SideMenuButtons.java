@@ -38,7 +38,7 @@ public class SideMenuButtons extends VBox {
 
         newButton.setOnAction(e ->
         {
-            System.out.println("Button was clicked");
+
             controller.captureImagePressed();
 
         });

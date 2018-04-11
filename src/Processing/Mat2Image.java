@@ -20,7 +20,7 @@ public class Mat2Image {
     public static Image getImage2(Mat mat){
         if (mat == null)
         {
-            System.out.println("");
+
             return null;
         }
         MatOfByte buffer = new MatOfByte();

@@ -27,7 +27,7 @@ public class ImageHelper {
 
     // open Image
     public static Mat openImage(File file){
-        System.out.println(file.getAbsolutePath());
+
         Mat mat = Imgcodecs.imread(file.getAbsolutePath());
         return mat;
     }

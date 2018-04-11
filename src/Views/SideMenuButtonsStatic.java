@@ -32,7 +32,7 @@ public class SideMenuButtonsStatic extends VBox {
 
         saveButton.setOnAction(e ->
         {
-            System.out.println("Button was clicked");
+
             this.controller.saveImagePressed();
 
         });

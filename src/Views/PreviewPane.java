@@ -21,7 +21,7 @@ public class PreviewPane extends AnchorPane {
 
     AbstractViewController controller;
 
-    PreviewController  previewController;
+
     ImageView preview;
     BorderPane pane1;
     Rectangle square;
@@ -46,7 +46,7 @@ public class PreviewPane extends AnchorPane {
         preview.setPreserveRatio(true);
 
         setStyle("-fx-background-color: #000000;");
-        previewController = new PreviewController();
+
         pane1= new BorderPane();
         pane1.setMaxWidth(width);
         pane1.setMinWidth(width);
@@ -54,9 +54,6 @@ public class PreviewPane extends AnchorPane {
 
         pane1.setCenter(preview);
 
-        widthProperty().addListener( l -> {
-            System.out.println(l);
-        });
 
         AnchorPane.setRightAnchor(pane1,0.0);
         AnchorPane.setLeftAnchor(pane1,0.0);
@@ -137,7 +134,7 @@ public class PreviewPane extends AnchorPane {
     }
 
     private void updateBox(double x, double y){
-        System.out.println("Actual y " + y);
+
         square.setVisible(true);
         square.setX(x);
         square.setY(y);

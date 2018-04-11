@@ -72,7 +72,7 @@ public abstract class AbstractViewController {
         fileChooser.setTitle("Open Resource File");
         File file = fileChooser.showOpenDialog(stage);
         String filePath = file.getName();
-        System.out.println(filePath);
+
         String extension = "";
 
         int i = filePath.lastIndexOf('.');
@@ -132,7 +132,7 @@ public abstract class AbstractViewController {
 
     public double[] requestToMoveBox(double x, double y){
         // x and y coordinates of location clicked within image
-        System.out.println("x: " + x + " y: " + y);
+
         currentBoxPosition[0] = x;
         currentBoxPosition[1] = y;
 
@@ -170,7 +170,7 @@ public abstract class AbstractViewController {
         percentY = Math.min(percentY, 1-(halfBoxSize() / localBounds.getHeight()));
         percentY = Math.max(percentY, boxSize.get() / localBounds.getHeight());
 
-        System.out.println(percentX + " by " + percentY);
+
         updateSelection(percentX, percentY, radiusWithRespectToWidth);
 
 
@@ -182,7 +182,7 @@ public abstract class AbstractViewController {
         selectionInfo[0] = xPercent;//(int) Math.round(xPercent * nativeSize.width);
         selectionInfo[1] = yPercent; //(int) Math.round(yPercent * nativeSize.height);
         selectionInfo[2] = radiusPercent; //(int) Math.round(radius);
-        System.out.println(selectionInfo[0] +" "+selectionInfo[1] + " " + selectionInfo[2]);
+
 
     }
 
@@ -199,23 +199,23 @@ public abstract class AbstractViewController {
         {
             case 1:
 
-                System.out.println("up");
+                //System.out.println("up");
 
                 break;
             case 2:
 
-                System.out.println("right");
+                //System.out.println("right");
                 break;
             case 3:
 
-                System.out.println("down");
+                //System.out.println("down");
                 break;
             case 4:
 
-                System.out.println("left");
+                //System.out.println("left");
                 break;
             default:
-                System.out.println("default");
+                //System.out.println("default");
                 break;
         }
 
@@ -228,9 +228,9 @@ public abstract class AbstractViewController {
     public void zoomPressed(int value){
         // TODO: Implement this
         if(value  > 0){
-            System.out.println("Zoom in pressed");
+            //System.out.println("Zoom in pressed");
         }else if (value < 0){
-            System.out.println("Zoom out pressed");
+            //System.out.println("Zoom out pressed");
         }
 
     }

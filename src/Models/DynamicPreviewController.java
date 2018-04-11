@@ -8,6 +8,7 @@ import Processing.VideoCap;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.opencv.core.Mat;
 
@@ -83,7 +84,7 @@ public class DynamicPreviewController extends AbstractViewController {
     public void captureImagePressed(){
         if(hasStartedCapturing) {
 
-            System.out.println("RequestToCaptureImage");
+
             Stage newWindow = WindowFactory.createStaticWindow(this, VideoCap.getInstance().getOneFrame(), "Capture " + (ViewManager.getManager().getTotalViewsCreated() + 1), patientName.get(), selectionInfo);
             newWindow.show();
             recaptureButtonDisabledProperty.setValue(false);
@@ -117,7 +118,11 @@ public class DynamicPreviewController extends AbstractViewController {
             timer = new Timer();
             timer.scheduleAtFixedRate(getFrameUpdater(metrics), 0, 33);
         }catch (InterruptedException e){ // Thrown by Thread.sleep
-            System.out.println("Could Not Sleep:" + e.getLocalizedMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Error Sleeping frame updater thread");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
 
     }
@@ -139,7 +144,7 @@ public class DynamicPreviewController extends AbstractViewController {
             this.timer.cancel();
             this.timer.purge();
         }
-        System.out.println("Controller Finalised");
+
 
     }
 

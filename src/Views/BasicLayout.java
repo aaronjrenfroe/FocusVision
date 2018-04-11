@@ -16,11 +16,11 @@ public class BasicLayout{
     public BasicLayout() {
         this.layout = new BorderPane();
         layout.widthProperty().addListener( (obs, oldVal, newVal) -> {
-            System.out.println(newVal);
+
             GlobalSettings.PreviewAreaWidth = (double)newVal;
         });
         layout.heightProperty().addListener( (obs, oldVal, newVal) -> {
-            System.out.println(newVal);
+
             GlobalSettings.PreviewAreaHeight = (double)newVal;
         });
     }

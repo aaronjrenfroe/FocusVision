@@ -5,11 +5,14 @@ import Helpers.MetricsCalculator;
 
 import javafx.scene.control.Alert;
 
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.opencv.core.Mat;
 
 import java.io.File;
+import java.util.Optional;
 
 
 /**
@@ -59,23 +62,23 @@ public class StaticViewController extends AbstractViewController {
     // save Image
     public void saveImagePressed(){
 
-        System.out.println("Should Save Image to this location");
+
         File theDir = new File(this.getSaveLocation());
         // if the directory does not exist, create it
         if (!theDir.exists()) {
-            System.out.println("creating directory: " + theDir.getName());
-            boolean result = false;
 
             try{
                 theDir.mkdirs();
-                result = true;
             }
             catch(SecurityException se){
                 //handle it
-                System.out.println(se);
-            }
-            if(result) {
-                System.out.println("DIR created");
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Exception Dialog");
+                alert.setHeaderText("An Exception was caught while trying to save an image");
+                alert.setContentText(se.getMessage());
+
+                alert.showAndWait();
             }
         }
 
@@ -91,23 +94,26 @@ public class StaticViewController extends AbstractViewController {
             outputName = outputName.replace(" ", "_") + ".png";
         }
 
-        System.out.println();
+
         File file = new File(outputName);
 
         if(file.exists()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            ButtonType foo = new ButtonType("foo", ButtonBar.ButtonData.YES);
+            ButtonType bar = new ButtonType("bar", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Would you like to overwrite the existing image?", foo, bar);
             alert.setHeaderText("File exists with the name: \"" + this.getPatientName()+"\"");
-            alert.setTitle("Not Saving");
-            alert.setContentText("Should add ask if they would like to over write");
-            alert.showAndWait();
+            alert.setTitle("Action Needed");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == foo) {
+                ImageHelper.saveImage(outputName, this.mat);
+            }
+
         }else{
             ImageHelper.saveImage(outputName, this.mat);
         }
     }
-
-
-    // Top Menu Functions
-
 
 
 }

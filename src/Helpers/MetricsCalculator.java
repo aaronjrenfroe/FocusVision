@@ -1,6 +1,7 @@
 package Helpers;
 
 import Models.Metrics;
+import javafx.scene.control.Alert;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -26,8 +27,7 @@ public class MetricsCalculator {
                 int centerY = boxBounds[1];
                 int radius = boxBounds[2];
 
-                System.out.println("Native Box Width " + radius * 2);
-                System.out.println("Native Mat res: " +mat.width() + " x " + mat.height());
+
 
                 Mat submat = mat.submat(centerY - radius, centerY + radius, centerX - radius, centerX + radius);
 
@@ -45,7 +45,12 @@ public class MetricsCalculator {
                 calculateMichelsonContrast(submat,metrics);
 
             }catch(Exception af){
-                System.out.println(af.getLocalizedMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText("Error Calculating Metrics");
+                alert.setContentText("Message from exception:" + af.getMessage());
+
+                alert.showAndWait();
             }
     }
 

@@ -54,10 +54,10 @@ public class VideoCap {
         mat2Img = new Mat2Image();
         cap.read(mat2Img.mat);
         if(mat2Img.mat.empty()){
-            System.out.println("Can't Open Camera");
+
         }
         nativeSize = mat2Img.mat.size();
-        System.out.println("Size: " +nativeSize);
+
         width = nativeSize.width;
 
     }
@@ -82,7 +82,7 @@ public class VideoCap {
 
         if(cameraCount > 0) {
             currentCamera = ++currentCamera % cameraCount;
-            System.out.println("Opened Camera: " + currentCamera);
+
             cap.release();
             cap.open(currentCamera);
 
@@ -106,7 +106,7 @@ public class VideoCap {
         System.gc();
         cap.read(mat2Img.mat);
         if (mat2Img.mat.empty()){
-            System.out.println("Null");
+
             return null;
         }else{
 //            If we would like to display a lower resolution image

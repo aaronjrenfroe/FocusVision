@@ -4,10 +4,10 @@ import Models.AbstractViewController;
 import Models.DynamicPreviewController;
 import Models.StaticViewController;
 import Processing.VideoCap;
+import javafx.scene.control.*;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
 
 import java.awt.*;
 import java.net.URL;
@@ -125,7 +125,12 @@ public class TopMenu extends MenuBar {
                 desktop.browse(new URL(strUrl).toURI());
                 return true;
             } catch (Exception e) {
-                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Could not open web page");
+                alert.setContentText("Exception message: " + e.getMessage());
+
+                alert.showAndWait();
             }
         }
         return false;
