@@ -18,11 +18,9 @@ import java.util.Map;
  */
 public class ImageHelper {
 
+    //save image function
     public static void saveImage(String fileName, Mat mat)
     {
-        //save image function
-
-        //Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2BGR);
         Imgcodecs.imwrite(fileName, mat);
 
     }
@@ -34,14 +32,6 @@ public class ImageHelper {
         return mat;
     }
 
-    public static BufferedImage openImage(String location){
-
-        return null;
-    }
-
-    public static void getImageMetadata(){
-        System.out.println("Should get image Metadata");
-    }
 
     public static Image getBufferedImageFromMat(Mat mat){
 

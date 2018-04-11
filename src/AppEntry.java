@@ -15,8 +15,6 @@ public class AppEntry extends Application{
 
 
     Stage window;
-    BasicLayout mainLayout;
-
 
     public static void main(String[] args) {
         launch(args);
@@ -48,7 +46,7 @@ public class AppEntry extends Application{
     @Override
     public void stop() throws Exception {
         super.stop();
-        System.out.println("Stoping JVM");
+        System.out.println("Stopping JVM");
         System.exit(0);
     }
 }

@@ -16,34 +16,5 @@ public class GlobalSettings {
     public static double PreviewAreaWidth = INITIAL_WIDTH - MENU_WIDTH;
     public static double PreviewAreaHeight = INITIAL_HEIGHT;
 
-    private int cameraWidth;
-    private int cameraHeight;
-
-    private int boxSize = 50;
-
-    public int getBoxSize() {
-        return boxSize;
-    }
-
-    public void setBoxSize(int boxSize) {
-        this.boxSize = boxSize;
-    }
-
-    public int getCameraWidth() {
-        return cameraWidth;
-    }
-
-    public void setCameraWidth(int cameraWidth) {
-        this.cameraWidth = cameraWidth;
-    }
-
-    public int getCameraHeight() {
-        return cameraHeight;
-    }
-
-    public void setCameraHeight(int cameraHeight) {
-        this.cameraHeight = cameraHeight;
-    }
-
 }
 
