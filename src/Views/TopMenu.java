@@ -3,7 +3,9 @@ package Views;
 import Models.AbstractViewController;
 import Models.DynamicPreviewController;
 import Models.StaticViewController;
+import Models.ViewManager;
 import Processing.VideoCap;
+import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -87,6 +89,10 @@ public class TopMenu extends MenuBar {
 
             MenuItem sep = new SeparatorMenuItem();
             MenuItem exitOption = new MenuItem("Exit");
+            exitOption.setOnAction(e -> {
+                ViewManager.getManager().getPrimaryStage().killTimer();
+                Platform.exit();
+            });
             fileMenu.getItems().addAll(openOption, sep, exitOption);
 
 
