@@ -17,7 +17,7 @@ public class Metrics {
     private static  final int NUMBER_OF_METRICS = MetricEnum.values().length;
 
     private static final int STATIC_BUFFER__SIZE = 1;
-    private static final int DYNAMIC_BUFFER_SIZE = 3;
+    private static final int DYNAMIC_BUFFER_SIZE = 5;
     private int bufferSize;
 
     // Step 1) Give your metric a label

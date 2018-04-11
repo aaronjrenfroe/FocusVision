@@ -3,6 +3,7 @@ package Processing;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.scene.image.Image;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -17,6 +18,11 @@ public class Mat2Image {
     public Mat2Image() {}
 
     public static Image getImage2(Mat mat){
+        if (mat == null)
+        {
+            System.out.println("");
+            return null;
+        }
         MatOfByte buffer = new MatOfByte();
         Imgcodecs.imencode(".bmp",mat, buffer);
         return new Image(new ByteArrayInputStream(buffer.toArray()));

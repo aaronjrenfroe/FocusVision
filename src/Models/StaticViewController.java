@@ -2,8 +2,9 @@ package Models;
 
 import Helpers.ImageHelper;
 import Helpers.MetricsCalculator;
-import javafx.geometry.Point2D;
+
 import javafx.scene.control.Alert;
+
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.opencv.core.Mat;
@@ -33,7 +34,9 @@ public class StaticViewController extends AbstractViewController {
     @Override
     public void setImageView(ImageView imageView){
         this.imageView = imageView;
-        this.imageView.setImage(ImageHelper.getBufferedImageFromMat(this.mat));
+        if (this.mat != null) {
+            this.imageView.setImage(ImageHelper.getBufferedImageFromMat(this.mat));
+        }
 
     }
 

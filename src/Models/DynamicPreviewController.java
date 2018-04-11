@@ -73,10 +73,12 @@ public class DynamicPreviewController extends AbstractViewController {
             @Override
             public void run() {
                 Mat mat = cap.getOneFrame();
-                imageView.setImage(Mat2Image.getImage2(mat));
+                if (mat != null) {
+                    imageView.setImage(Mat2Image.getImage2(mat));
 
-                if(selectionInfo != null) {
-                    MetricsCalculator.calculateMetrics(mat, selectionInfo[0], selectionInfo[1], selectionInfo[2], metrics);
+                    if (selectionInfo != null) {
+                        MetricsCalculator.calculateMetrics(mat, selectionInfo[0], selectionInfo[1], selectionInfo[2], metrics);
+                    }
                 }
             }
         };
