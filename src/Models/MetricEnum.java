@@ -2,7 +2,7 @@ package Models;
 
 /**
  * Created by AaronR on 3/8/18.
- * for ?
+ * for Senior Capstone 2018
  */
 public enum MetricEnum {
 
