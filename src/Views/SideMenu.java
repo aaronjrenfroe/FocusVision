@@ -102,10 +102,13 @@ public class SideMenu extends BorderPane {
         bottomBox.setSpacing(10);
         bottomBox.setAlignment(Pos.BOTTOM_LEFT);
         bottomBox.setPadding(new Insets(10));
-        SideMenuBottomZoom menuSideZoom = new SideMenuBottomZoom(GlobalSettings.MENU_WIDTH, controller);
 
         bottomBox.getChildren().addAll(nameLable, textFieldName, idLable, textFieldLocation);
+        
+        /* // Disabling Zoom and Pan Buttons
+        SideMenuBottomZoom menuSideZoom = new SideMenuBottomZoom(GlobalSettings.MENU_WIDTH, controller);
         bottomBox.getChildren().addAll(menuSideZoom); // add last to place on bottom
+        */
         setBottom(bottomBox);
     }
 
