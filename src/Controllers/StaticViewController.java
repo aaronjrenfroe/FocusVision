@@ -100,8 +100,8 @@ public class StaticViewController extends AbstractViewController {
         File file = new File(outputName);
 
         if(file.exists()) {
-            ButtonType foo = new ButtonType("foo", ButtonBar.ButtonData.YES);
-            ButtonType bar = new ButtonType("bar", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType foo = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+            ButtonType bar = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
             Alert alert = new Alert(Alert.AlertType.WARNING, "Would you like to overwrite the existing image?", foo, bar);
             alert.setHeaderText("File exists with the name: \"" + this.getPatientName()+"\"");
             alert.setTitle("Action Needed");
