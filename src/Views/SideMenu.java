@@ -50,9 +50,21 @@ public class SideMenu extends BorderPane {
         boxSizeSpinner = new Spinner(10, 100, GlobalSettings.INITIAL_BOX_SIZE);
         boxSizeSpinner.setEditable(true);
 
+        // We want to limit the value to an even number becasue it gets divided by 2.
+        // This is esentially a picker for half the length of a side aka radius
+        // if you will from the center of the square
         boxSizeSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
-            controller.setBoxSize(newValue);
+            if(newValue % 2 == 1){
+                if(oldValue < newValue) {
+                    boxSizeSpinner.increment();
+                }else{
+                    boxSizeSpinner.decrement();
+                }
+            }else {
+                controller.setBoxSize(newValue);
+            }
         });
+
         boxSizeSpinner.setPrefWidth(75);
         HBox boxSizeItems = new HBox();
         boxSizeItems.getChildren().addAll(boxSizeLabel,boxSizeSpinner);
