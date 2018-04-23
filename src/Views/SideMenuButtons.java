@@ -1,11 +1,9 @@
 package Views;
 
-import Models.DynamicPreviewController;
+import Controllers.DynamicPreviewController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
 import javafx.scene.layout.VBox;
 
 /**

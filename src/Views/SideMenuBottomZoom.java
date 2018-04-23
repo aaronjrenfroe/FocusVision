@@ -1,13 +1,10 @@
 package Views;
-import Models.AbstractViewController;
+import Controllers.AbstractViewController;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 /**
  * Created by richa on 2/12/2018.

@@ -1,7 +1,6 @@
 package Views;
 
 import Helpers.GlobalSettings;
-import Models.AbstractViewController;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 

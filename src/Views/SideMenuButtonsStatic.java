@@ -1,14 +1,11 @@
 package Views;
 
-import Models.AbstractViewController;
-import Models.StaticViewController;
+import Controllers.StaticViewController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 
 
 /**

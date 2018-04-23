@@ -1,7 +1,6 @@
 package Views;
 
-import Models.AbstractViewController;
-import Processing.*;
+import Controllers.AbstractViewController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

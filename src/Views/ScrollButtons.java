@@ -1,10 +1,9 @@
 package Views;
 
-import Models.AbstractViewController;
+import Controllers.AbstractViewController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 
 /**
  * Created by richa on 2/28/2018.

@@ -1,9 +1,9 @@
 package Views;
 
 import Helpers.GlobalSettings;
-import Models.AbstractViewController;
-import Models.DynamicPreviewController;
-import Models.StaticViewController;
+import Controllers.AbstractViewController;
+import Controllers.DynamicPreviewController;
+import Controllers.StaticViewController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -16,7 +16,8 @@ import javafx.scene.paint.Color;
 
 /**
  * Created by AaronR on 1/22/18.
- * for Hooter Whater
+ *
+ *
  */
 public class SideMenu extends BorderPane {
 
@@ -94,9 +95,7 @@ public class SideMenu extends BorderPane {
         textFieldLocation.setOnKeyReleased(e -> {
             controller.setSaveLocation(textFieldLocation.getText());
         });
-
-
-
+        
         //setAlignment(Pos.BASELINE_CENTER);
         VBox bottomBox = new VBox();
         bottomBox.setSpacing(10);
@@ -104,7 +103,7 @@ public class SideMenu extends BorderPane {
         bottomBox.setPadding(new Insets(10));
 
         bottomBox.getChildren().addAll(nameLable, textFieldName, idLable, textFieldLocation);
-        
+
         /* // Disabling Zoom and Pan Buttons
         SideMenuBottomZoom menuSideZoom = new SideMenuBottomZoom(GlobalSettings.MENU_WIDTH, controller);
         bottomBox.getChildren().addAll(menuSideZoom); // add last to place on bottom

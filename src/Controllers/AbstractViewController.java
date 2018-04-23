@@ -1,6 +1,8 @@
-package Models;
+package Controllers;
 import Helpers.GlobalSettings;
 import Helpers.ImageHelper;
+import Models.Metrics;
+import Models.WindowFactory;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Bounds;

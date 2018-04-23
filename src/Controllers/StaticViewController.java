@@ -1,8 +1,10 @@
-package Models;
+package Controllers;
 
+import Controllers.AbstractViewController;
 import Helpers.ImageHelper;
 import Helpers.MetricsCalculator;
 
+import Models.Metrics;
 import javafx.scene.control.Alert;
 
 import javafx.scene.control.ButtonBar;

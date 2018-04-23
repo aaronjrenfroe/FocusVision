@@ -1,13 +1,15 @@
-package Models;
+package Controllers;
 
 
+import Models.Metrics;
+import Models.ViewManager;
+import Models.WindowFactory;
 import Processing.Mat2Image;
 import Helpers.MetricsCalculator;
 import Processing.VideoCap;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.opencv.core.Mat;

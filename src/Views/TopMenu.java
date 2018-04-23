@@ -1,10 +1,9 @@
 package Views;
 
-import Models.AbstractViewController;
-import Models.DynamicPreviewController;
-import Models.StaticViewController;
+import Controllers.AbstractViewController;
+import Controllers.DynamicPreviewController;
+import Controllers.StaticViewController;
 import Models.ViewManager;
-import Processing.VideoCap;
 import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.control.Menu;

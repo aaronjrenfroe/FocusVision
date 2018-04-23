@@ -1,10 +1,10 @@
 package Models;
 
+import Controllers.AbstractViewController;
+import Controllers.DynamicPreviewController;
+import Controllers.StaticViewController;
 import Helpers.GlobalSettings;
-import Models.DynamicPreviewController;
-import Models.StaticViewController;
 
-import Processing.VideoCap;
 import Views.BasicLayout;
 import Views.PreviewPane;
 import Views.SideMenu;
