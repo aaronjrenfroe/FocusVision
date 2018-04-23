@@ -1,6 +1,6 @@
 # Focus Vision
 
-Our university conducts research on glaucoma and is developing software tools to help detect pressure changes within an eye. Our project was creating a software program that supports a small USB high magnification macro camera. This program contains a graphical user interface for the user to navigate through as well as algorithms to retrieve metrics from live and still images. Since the camera has a narrow depth of field of 2mm, our program will calculate how in-focus an image or portion of a frame is in order to let the user know when to take a picture.
+California Baptist University conducts research on glaucoma and is developing software tools to help detect pressure changes within an eye. Our project was creating a software program that supports a small USB high magnification macro camera. This program contains a graphical user interface for the user to navigate through as well as algorithms to retrieve metrics from live and still images. Since the camera has a narrow depth of field of 2mm, our program will calculate how in-focus an image or portion of a frame is in order to let the user know when to take a picture.
 
 ## Getting Started
 
