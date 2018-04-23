@@ -21,10 +21,10 @@ Run AppEntry
 
 
 ##### Starting the Camera
-Upon running the application you will be presented with the main screen with a black center pane. This is where the camer feed will appear once "Open Camera is clicked". Upon Pressing "Open Camera", the program checks for available cameras and starts the first one. To change camera's use View->Change Camera in the Top Menu. 
+Upon running the application you will be presented with the main screen with a black center pane. This is where the camera feed will appear once "Open Camera is clicked". Upon Pressing "Open Camera", the program checks for available cameras and starts the first one. To change camera's use View->Change Camera in the Top Menu. 
 
 ##### Opening an Image
-An Image can be opened using File->Open in the top menu. Supported file formats are png, jpg, jpeg, tif, and tiff. We know these file formats work, however removing the limits in code might allow you to open other formats. If the image you chose was captured by this application the image will open with the previously saved selection selected and metrics visable. 
+An Image can be opened using File->Open in the top menu. Supported file formats are png, jpg, jpeg, tif, and tiff. We know these file formats work, however removing the limits in code might allow you to open other formats. If the image you chose was captured by this application the image will open with the previously saved selection selected and metrics visible. 
 
 ##### Making a Selection
 Once the live preview has started or you have opened an image you can click on the preview and a box will appear. The metrics will be calculated for the portion of the image within this box and you should see those begin to update. Double click or double tap the box to clear the box. You can also resize the box using the control in the menu on the left. 
@@ -33,7 +33,7 @@ Once the live preview has started or you have opened an image you can click on t
 You can capture an image by pressing "Capture" in the menu on the left and a new window will appear with your captured image, selection, and metrics. Pressing recapture in the main window will replace the image in this new window. 
 
 ##### Saving an Image
-An image can only be saved once it has be captured and the default save location is the Desktop in a folder named "FocusVision". You can change the save location by modifying the location at the bottom of the left menu.  From your captured window, name your image, if you have selected a portion of the image information will be appened to this file name. It would look like this: 
+An image can only be saved once it has be captured and the default save location is the Desktop in a folder named "FocusVision". You can change the save location by modifying the location at the bottom of the left menu.  From your captured window, name your image, if you have selected a portion of the image information will be append to this file name. If wanted to name your image Patient1LeftEye2, It might look like this: 
 
 Patient1LeftEye2_0.808235294117647_0.40366013071895424_0.058823529411764705.png
 
@@ -57,7 +57,7 @@ An image can only be saved once it has be captured and the default save location
 
 ## Authors
 
-* **Aarin Renfroe** - *Project Lead - [LinkedIn](https://www.linkedin.com/in/aaron-renfroe/)
+* **Aaron Renfroe** - *Project Lead - [LinkedIn](https://www.linkedin.com/in/aaron-renfroe/)
 * **Richard Christensen** - *Team Member* - [Email](richardarsha@yahoo.com)
 * **Jp Syfacunda** - *Team Member* - [LinkedIn](https://www.linkedin.com/in/john-syfacunda-10a917106/)
 
