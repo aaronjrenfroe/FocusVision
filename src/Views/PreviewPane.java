@@ -79,18 +79,20 @@ public class PreviewPane extends AnchorPane {
                 square.setVisible(false);
                 e.consume();
             }else {
-                requestToMoveBox(e.getX(), e.getY());
+                System.out.println("Click Location: " + e.getX() + " " + e.getY());
+                controller.requestToMoveBox(e.getX(), e.getY());
             }
 
         });
 
         preview.setOnMouseDragged(e -> {
-            requestToMoveBox( e.getX(),  e.getY());
+            controller.requestToMoveBox( e.getX(),  e.getY());
         });
         layoutMetrics();
     }
 
     private void layoutMetrics(){
+
         GridPane bottomMetrics = new GridPane();
 
         SimpleStringProperty[] metricProperties = controller.getMetrics().getProperties();
@@ -102,7 +104,7 @@ public class PreviewPane extends AnchorPane {
             // Starts from bottom to top, left to right,
             // 3, 4, 5
             // 0, 1, 2
-            bottomMetrics.add(metricLabel,i%3, (metricProperties.length/3) - (i/3));
+            bottomMetrics.add(metricLabel,i%4, (metricProperties.length/4) - (i/4));
 
         }
 
@@ -113,11 +115,11 @@ public class PreviewPane extends AnchorPane {
         // This needs to be beautified
         // Makes the Columns equal spaced
         ColumnConstraints cc = new ColumnConstraints();
-        cc.setPercentWidth(33);
+        cc.setPercentWidth(25);
         ColumnConstraints cc1 = new ColumnConstraints();
-        cc1.setPercentWidth(33);
+        cc1.setPercentWidth(25);
         ColumnConstraints cc2 = new ColumnConstraints();
-        cc2.setPercentWidth(33);
+        cc2.setPercentWidth(25);
         bottomMetrics.getColumnConstraints().add(cc);
         bottomMetrics.getColumnConstraints().add(cc1);
         bottomMetrics.getColumnConstraints().add(cc2);
@@ -127,16 +129,13 @@ public class PreviewPane extends AnchorPane {
 
     }
 
-    public void requestToMoveBox(double x, double y){
-        double[] xAndYPosOfBox = controller.requestToMoveBox(x,y);
-        updateBox(xAndYPosOfBox[0] ,xAndYPosOfBox[1]);
-    }
 
-    private void updateBox(double x, double y){
+    public void setBoxLocation(double x, double y){
 
         square.setVisible(true);
         square.setX(x);
         square.setY(y);
+        System.out.println("Box Location: " + x + ", " + y);
     }
 
 }

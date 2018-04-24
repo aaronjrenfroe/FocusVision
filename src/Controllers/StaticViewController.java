@@ -5,6 +5,8 @@ import Helpers.ImageHelper;
 import Helpers.MetricsCalculator;
 
 import Models.Metrics;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 
 import javafx.scene.control.ButtonBar;
@@ -117,6 +119,33 @@ public class StaticViewController extends AbstractViewController {
         }
     }
 
+
+    // Not being Used yet
+    // given x and y percent set the box location over that point.
+    public void setInitialSelectionBox() {
+        // localBounds are incorrect until shortly after stage is presented which is why we wait.
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+
+                        Bounds localBounds = imageView.getBoundsInLocal();
+
+                        double halfBoxWidthInPixels = selectionInfo[2] * localBounds.getWidth();
+                        double centerX = (selectionInfo[0] * localBounds.getWidth()) - (halfBoxWidthInPixels);
+                        double centerY = (selectionInfo[1] * localBounds.getHeight()) - (halfBoxWidthInPixels);
+
+                        System.out.println("X: " + selectionInfo[0] * localBounds.getWidth() + "Y: " + selectionInfo[1] * localBounds.getHeight());
+                        System.out.println(localBounds);
+                        Point2D newPoxPos = imageView.localToParent(centerX, centerY);
+                        previewPane.setBoxLocation(newPoxPos.getX(), newPoxPos.getY());
+
+                    }
+                },
+                500
+        );
+
+    }
 
 }
 

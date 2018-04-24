@@ -29,7 +29,7 @@ public class WindowFactory {
         SideMenu menu = new SideMenu(GlobalSettings.MENU_WIDTH, true, controller);
 
         PreviewPane preview = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH, controller);
-
+        controller.setPreviewPane(preview);
         TopMenu topMenu = new TopMenu("MAIN",controller);
 
         BasicLayout mainLayout = new BasicLayout();
@@ -57,6 +57,8 @@ public class WindowFactory {
         TopMenu tm = new TopMenu("VIEWER", controller);
         PreviewPane pp = new PreviewPane(GlobalSettings.INITIAL_WIDTH - GlobalSettings.MENU_WIDTH, controller);
 
+        controller.setPreviewPane(pp);
+
         BasicLayout bl = new BasicLayout();
 
         //StaticViewModel model = new StaticViewModel();
@@ -79,6 +81,7 @@ public class WindowFactory {
 
         try {
             controller.updateSelection(selectionInfo[0], selectionInfo[1], selectionInfo[2]);
+            controller.setInitialSelectionBox();
         } catch (NullPointerException e) {}
 
         return newWindow;

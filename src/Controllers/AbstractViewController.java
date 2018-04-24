@@ -3,6 +3,7 @@ import Helpers.GlobalSettings;
 import Helpers.ImageHelper;
 import Models.Metrics;
 import Models.WindowFactory;
+import Views.PreviewPane;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Bounds;
@@ -43,7 +44,7 @@ public abstract class AbstractViewController {
     Stage stage;
 
     ImageView imageView;
-
+    PreviewPane previewPane;
 
 
     public AbstractViewController(String windowName, Stage stage) {
@@ -66,6 +67,9 @@ public abstract class AbstractViewController {
 
     }
 
+    public void setPreviewPane(PreviewPane previewPane) {
+        this.previewPane = previewPane;
+    }
 
     // open Image
     public void openImagePressed(){
@@ -79,7 +83,7 @@ public abstract class AbstractViewController {
 
         int i = filePath.lastIndexOf('.');
         if (i > 0) {
-            extension = filePath.substring(i+1);
+            extension = filePath.substring(i+1).toLowerCase();
         }
 
         if (extension.contains("png") || extension.contains("tiff") || extension.contains("tif") || extension.contains("jpg") || extension.contains("jpeg")){
@@ -131,8 +135,7 @@ public abstract class AbstractViewController {
         this.imageView = imageView;
     }
 
-
-    public double[] requestToMoveBox(double x, double y){
+    public void requestToMoveBox(double x, double y){
         // x and y coordinates of location clicked within image
 
         currentBoxPosition[0] = x;
@@ -152,14 +155,14 @@ public abstract class AbstractViewController {
         yPos = Math.max(yPos, bounds.getMinY());
 
         updateVidCapMetricBox(x,y);
-        double[] xAndYPos = {xPos,yPos};
-        return xAndYPos;
+
+        previewPane.setBoxLocation(xPos,yPos);
 
     }
 
     protected void updateVidCapMetricBox(double centerX, double centerY){
 
-        Bounds localBounds = imageView.boundsInLocalProperty().getValue();
+        Bounds localBounds = imageView.getBoundsInLocal();
         double radiusWithRespectToWidth = halfBoxSize() / localBounds.getWidth();
 
         //TODO:  check edge cases literally
@@ -172,10 +175,8 @@ public abstract class AbstractViewController {
         percentY = Math.min(percentY, 1-(halfBoxSize() / localBounds.getHeight()));
         percentY = Math.max(percentY, boxSize.get() / localBounds.getHeight());
 
-
         updateSelection(percentX, percentY, radiusWithRespectToWidth);
-
-
+        System.out.println(localBounds);
     }
 
     public void updateSelection(double xPercent, double yPercent, double radiusPercent){
@@ -185,12 +186,11 @@ public abstract class AbstractViewController {
         selectionInfo[1] = yPercent; //(int) Math.round(yPercent * nativeSize.height);
         selectionInfo[2] = radiusPercent; //(int) Math.round(radius);
 
-
     }
 
 
 
-    private double halfBoxSize(){
+    protected double halfBoxSize(){
         return boxSize.get()/2.0;
     }
 
