@@ -65,6 +65,8 @@ public class SideMenu extends BorderPane {
             }
         });
 
+        
+
         boxSizeSpinner.setPrefWidth(75);
         HBox boxSizeItems = new HBox();
         boxSizeItems.getChildren().addAll(boxSizeLabel,boxSizeSpinner);

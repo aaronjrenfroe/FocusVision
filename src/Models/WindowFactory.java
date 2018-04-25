@@ -79,10 +79,14 @@ public class WindowFactory {
             ViewManager.getManager().removeStage(controller);
         });
 
-        try {
-            controller.updateSelection(selectionInfo[0], selectionInfo[1], selectionInfo[2]);
-            controller.setInitialSelectionBox();
-        } catch (NullPointerException e) {}
+        if(selectionInfo[0] * selectionInfo[0] * selectionInfo[0] > 0.000001 ) {
+
+            try {
+                controller.updateSelection(selectionInfo[0], selectionInfo[1], selectionInfo[2]);
+                controller.setInitialSelectionBox();
+            } catch (NullPointerException e) {
+            }
+        }
 
         return newWindow;
 

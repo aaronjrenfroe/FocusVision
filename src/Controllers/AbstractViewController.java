@@ -89,7 +89,9 @@ public abstract class AbstractViewController {
         if (extension.contains("png") || extension.contains("tiff") || extension.contains("tif") || extension.contains("jpg") || extension.contains("jpeg")){
 
             double selectInfo[] = ImageHelper.parseSelectionFromName(file.getName());
+            if(selectInfo[0] *selectInfo[0] * selectInfo[0] > 0.000001 ){
 
+            }
             Mat mat = ImageHelper.openImage(file);
             Stage stage = WindowFactory.createStaticWindow(this, mat, file.getAbsolutePath(), file.getName(), selectInfo);
             stage.show();
