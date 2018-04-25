@@ -11,6 +11,7 @@ Clone and download the project.
 You need to provide your own OpenCV library and (dll for windows pr dylib for mac) file for the project. 
 * If you already have the OpenCV library, great just add it to the project and run the project from AppEntry
 * If you do not already have OpenCV you will have to get it. See [this page](http://opencv-java-tutorials.readthedocs.io/en/latest/01-installing-opencv-for-java.html)for how to get it.
+- Windows Users can download it [here](https://docs.opencv.org/3.0-beta/doc/tutorials/introduction/windows_install/windows_install.html)
 
 
 ### Building
