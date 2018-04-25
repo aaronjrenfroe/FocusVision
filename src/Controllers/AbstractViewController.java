@@ -178,7 +178,7 @@ public abstract class AbstractViewController {
         percentY = Math.max(percentY, boxSize.get() / localBounds.getHeight());
 
         updateSelection(percentX, percentY, radiusWithRespectToWidth);
-        System.out.println(localBounds);
+
     }
 
     public void updateSelection(double xPercent, double yPercent, double radiusPercent){

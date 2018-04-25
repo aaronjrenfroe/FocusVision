@@ -79,7 +79,7 @@ public class PreviewPane extends AnchorPane {
                 square.setVisible(false);
                 e.consume();
             }else {
-                System.out.println("Click Location: " + e.getX() + " " + e.getY());
+                
                 controller.requestToMoveBox(e.getX(), e.getY());
             }
 
@@ -135,7 +135,7 @@ public class PreviewPane extends AnchorPane {
         square.setVisible(true);
         square.setX(x);
         square.setY(y);
-        System.out.println("Box Location: " + x + ", " + y);
+
     }
 
 }

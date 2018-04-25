@@ -135,8 +135,8 @@ public class StaticViewController extends AbstractViewController {
                         double centerX = (selectionInfo[0] * localBounds.getWidth()) - (halfBoxWidthInPixels);
                         double centerY = (selectionInfo[1] * localBounds.getHeight()) - (halfBoxWidthInPixels);
 
-                        System.out.println("X: " + selectionInfo[0] * localBounds.getWidth() + "Y: " + selectionInfo[1] * localBounds.getHeight());
-                        System.out.println(localBounds);
+
+
                         Point2D newPoxPos = imageView.localToParent(centerX, centerY);
                         previewPane.setBoxLocation(newPoxPos.getX(), newPoxPos.getY());
 
