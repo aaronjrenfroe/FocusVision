@@ -20,7 +20,6 @@ public class PreviewPane extends AnchorPane {
 
     AbstractViewController controller;
 
-
     ImageView preview;
     BorderPane pane1;
     Rectangle square;
